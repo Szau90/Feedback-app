@@ -1,25 +1,32 @@
 export interface Comments {
     id:number;
     content:string;
-    user: {
+    user: User
+    replies?: Replies[];
+}
+
+export interface User {
         image:string;
-        name: string;
+        name:string;
         username:string;
-    };
-    replies: Replies[];
 }
 export interface Replies {
     content:string;
     replyingTo:string;
-    user: {
-        image:string;
-        name:string;
-        username:string;
-          };
+    user: User;
+}
+
+export interface ProductRequests {
+    productRequests: Feedback
+}
+
+export interface Data {
+    currentUser: User,
+    productRequests: ProductRequests[],
 }
 
 interface Feedback {
- 
+    
     
         id: number;
         title: string;

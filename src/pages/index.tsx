@@ -1,31 +1,28 @@
-import { MongoClient } from "mongodb";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
-import Logo from "@/components/Ui/Logo";
 
 import { Jost } from "next/font/google";
 
 import FeedbackList from "@/components/Feedbacklist";
 import Feedback from "@/models/feedback";
-import CategoryList from "@/components/Ui/CategoryList";
-import { RoadmapList } from "@/components/Ui/RoadmapList";
 import { Navigation } from "@/components/Ui/Navigation";
 
-import Dropdown from "@/components/Ui/Dropdown";
 import { SuggestionHeader } from "@/components/Ui/SuggestionsHeader";
 import { Nofeedback } from "@/components/Nofeedback";
 import { Layout } from "@/components/Layout/Layout";
 
 const jost = Jost({ subsets: ["latin"] });
 
+const API_URL = process.env.API_URL || "http://localhost:3000"; 
+
 const Home = ({
-  productRequests,
+  feedback,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const statusArray = productRequests.map((s) => s.status);
+  const statusArray = feedback.map((s) => s.status);
   const planned = statusArray.filter((f) => f === "planned").length;
   const inProgress = statusArray.filter((f) => f === "in-progress").length;
   const live = statusArray.filter((f) => f === "live").length;
 
-  const allFeedback = productRequests
+  const allFeedback = feedback
     .filter((f) => f.status === "suggestion")
     .map((f) => (
       <FeedbackList
@@ -36,6 +33,7 @@ const Home = ({
         category={f.category}
         description={f.description}
         upvotes={f.upvotes}
+        status={f.status}
       />
     ));
 
@@ -58,20 +56,19 @@ const Home = ({
 };
 
 export const getStaticProps: GetStaticProps<{
-  productRequests: Feedback[];
+  feedback: Feedback[];
 }> = async () => {
-  const client = await MongoClient.connect(
-    "mongodb+srv://Szau:FordMondeo12@cluster0.jfdopa9.mongodb.net/Product-feedback-app?retryWrites=true&w=majority"
-  );
-  const db = client.db();
+  const res = await fetch (`${API_URL}/api/feedback`)
 
-  const collection = db.collection("product-requests");
+  if (!res.ok) {
+    throw new Error('Cannot find feedback')
+  }
 
-  const result = await collection.find().toArray();
+  const data:Feedback[] = await res.json()
 
   return {
     props: {
-      productRequests: result.map((feedback) => ({
+      feedback: data.map((feedback:Feedback) => ({
         id: feedback.id,
         title: feedback.title,
         category: feedback.category,

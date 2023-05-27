@@ -1,7 +1,7 @@
 import { useState } from "react";
 import CategoryList from "./CategoryList";
 import Logo from "./Logo";
-import { RoadmapList } from "./RoadmapList";
+import { RoadmapLabel } from "./RoadmapLabel";
 import { MobileMenu } from "./MobileMenu";
 
 export const Navigation: React.FC<{
@@ -26,7 +26,7 @@ export const Navigation: React.FC<{
         )}
         <div className="right-0inset-y-0 absolute inset-y-0 right-0 top-[72px] hidden h-[595px] w-[271px] flex-col items-center gap-[24px] bg-custom-light-gray pt-[24px] md:static md:flex md:h-[178px] md:w-[456px] md:flex-row md:gap-[10px] md:bg-inherit md:pt-0 xl:h-[368px] xl:w-[255px] xl:flex-col xl:gap-[24px]">
           <CategoryList />
-          <RoadmapList planned={planned} inProgress={inProgress} live={live} />
+          <RoadmapLabel planned={planned} inProgress={inProgress} live={live} />
         </div>
       </section>
     </>

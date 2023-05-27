@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export const RoadmapList: React.FC<{
+export const RoadmapLabel: React.FC<{
   planned: number;
   inProgress: number;
   live: number;
@@ -16,7 +16,7 @@ export const RoadmapList: React.FC<{
           </h3>
           <Link
             className="inline-block text-body3 text-custom-dark-blue"
-            href={"/"}
+            href={"/roadmap"}
           >
             View
           </Link>

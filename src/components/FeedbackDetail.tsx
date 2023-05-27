@@ -13,7 +13,8 @@ export const FeedbackDetail: React.FC<{
   category: string;
   description: string;
   upvotes: number;
-}> = ({ id, title, comments, category, description, upvotes }) => {
+  status: string;
+}> = ({ id, title, comments, category, description, upvotes, status }) => {
 
   const router = useRouter()
   const editBtnHandler = () => {
@@ -25,7 +26,7 @@ export const FeedbackDetail: React.FC<{
   return (
     <>
       <div className="w-[327px] flex justify-between mt-[24px] md:w-[689px] md:mt-[56px] xl:w-[825px]">
-        <GoBackBtn label={"Go Back"} action={goBackHandler} />
+        <GoBackBtn label={"Go Back"} text="text-custom-light-gray" action={goBackHandler} />
         <div className="w-[119px] md:w-[142px]">
           <MainBtn
             label="Edit Feedback"
@@ -42,6 +43,7 @@ export const FeedbackDetail: React.FC<{
         category={category}
         description={description}
         upvotes={upvotes}
+        status={status}
       />
    
       <CommentList comments={comments} />

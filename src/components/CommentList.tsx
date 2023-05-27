@@ -18,7 +18,7 @@ const CommentList: React.FC<{ comments: Comments[] }> = ({ comments }) => {
 
   const totalLength = commentsLength + replyLength;
 
-  const  hasComment = comments !== null
+  const  hasComment = comments !== undefined
 
   return (
     <ul className="mt-[24px] rounded-[10px] bg-white ">

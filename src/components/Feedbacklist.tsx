@@ -1,7 +1,7 @@
 import { Comments } from "@/models/feedback";
-import CommentList from "./CommentList";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 const FeedbackList: React.FC<{
   id: number;
@@ -10,22 +10,42 @@ const FeedbackList: React.FC<{
   category: string;
   description: string;
   upvotes: number;
+  status: string;
 }> = (props) => {
-  const { id, title, comments, category, description, upvotes } = props;
+  const { id, title, comments, category, description, upvotes, status } = props;
 
-  const noComments = comments === null;
+  const [hasComment, setHasComment] = useState(false);
 
-  // { !noComments && <CommentList comments={comments} />}
+  useEffect(() => {
+    if (comments) {
+      setHasComment(true);
+    }
+  }, [comments]);
 
   const router = useRouter();
 
   const clickHandler = () => {
-    router.push(`/${id}`)
+    router.push(`/${id}`);
   };
+
+  const borderColor =
+    status === "in-progress"
+      ? " border-t-4 border-custom-purple"
+      : status === "live"
+      ? " border-t-4 border-custom-light-blue"
+      : status === "planned"
+      ? " border-t-[6px] rounded-l border-custom-light-orange"
+      : "";
+
+  const roadmap = router.pathname === "/roadmap";
+  const border = roadmap ? ` ${borderColor}` : "";
 
   return (
     <>
-      <ul onClick={clickHandler} className="  mt-[20px]   xl:h-[151px]  xl:w-[825px] cursor-pointer ">
+      <ul
+        onClick={clickHandler}
+        className={`${border}  mt-[20px]   cursor-pointer  xl:h-[151px] xl:w-[825px]`}
+      >
         <li className=" box-border flex h-[200px] w-[327px] items-center justify-center rounded-lg border-0 bg-white md:h-[151px] md:w-[689px]  xl:w-[825px]">
           <div className="flex flex-col md:h-[95px] md:w-[625px] md:flex-row md:justify-between xl:w-[761px]">
             <div className="hidden h-[32px] w-[69px] items-center justify-around rounded-[10px] bg-custom-very-light-gray md:flex md:h-[53px] md:w-[40px] md:flex-col">
@@ -41,6 +61,12 @@ const FeedbackList: React.FC<{
               </p>
             </div>
             <div className="flex-col  md:w-[476px] xl:mr-[120px]">
+              { roadmap &&
+                <div className="flex flex-row items-center gap-2 h-[19px] mb-[16px]">
+                  <div className="h-[8px] w-[8px] rounded-full bg-custom-light-orange"></div>
+                  <p className="text-[13px] leading-[19px] capitalize text-custom-gray ">{status}</p>
+                </div>
+              }
               <h1 className="w-[278px] text-[13px] font-bold tracking-[-0.18px] text-custom-very-dark-gray md:w-max  md:text-h3">
                 {title}
               </h1>
@@ -74,7 +100,7 @@ const FeedbackList: React.FC<{
                   alt="comments"
                 />
                 <p className="ml-[9px] text-[13px] font-bold tracking-[-0.18px]">
-                  {noComments ? 0 : comments.length}
+                  {!hasComment ? 0 : comments.length}
                 </p>
               </div>
             </div>

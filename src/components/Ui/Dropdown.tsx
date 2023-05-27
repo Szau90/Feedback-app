@@ -10,6 +10,8 @@ const Dropdown: React.FC<{
   position: string;
   height: string;
   width: string;
+  selectedValue: string | null;
+  handleChange: (option:string) => void;
 }> = ({
   placeHolder,
   options,
@@ -19,9 +21,11 @@ const Dropdown: React.FC<{
   position,
   height,
   width,
+  selectedValue,
+  handleChange,
 }) => {
   const [showmenu, setShowmenu] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<null | string>(null);
+ // const [selectedValue, setSelectedValue] = useState<null | string>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -35,11 +39,11 @@ const Dropdown: React.FC<{
     return placeHolder;
   };
 
-  const onItemClick = (option: string) => {
+  /*const onItemClick = (option: string) => {
     setSelectedValue(option);
-    console.log(option);
+    return option;
   };
-
+*/
   const isSelected = (options: string) => {
     if (!selectedValue) {
       return false;
@@ -54,7 +58,7 @@ const Dropdown: React.FC<{
         className={`dropdown-input  flex h-full w-full select-none items-center justify-between ${padding} ${background}`}
       >
         <div className={`dropdown-selected-value cursor-pointer ${color}`}>
-          <span className="text-[11px] font-bold md:text-[14px]">
+          <span className="text-[11px] capitalize font-bold md:text-[14px]">
             {getDisplay()}
           </span>
         </div>
@@ -64,7 +68,7 @@ const Dropdown: React.FC<{
           >
             {options.map((option) => (
               <div
-                onClick={() => onItemClick(option)}
+                onClick={() => handleChange(option)}
                 key={option}
                 className={`dropdown-item flex cursor-pointer justify-between border-y-[1px] border-custom-light-gray px-[24px]  py-[12.125px] text-[#647196] last:border-none hover:text-custom-purple ${
                   isSelected(option) && "selected"
