@@ -23,6 +23,8 @@ export const FeedbackDetail: React.FC<{
   const goBackHandler = () => {
     router.push('/')
   }
+
+  
   return (
     <>
       <div className="w-[327px] flex justify-between mt-[24px] md:w-[689px] md:mt-[56px] xl:w-[825px]">
@@ -47,7 +49,17 @@ export const FeedbackDetail: React.FC<{
       />
    
       <CommentList comments={comments} />
-      <AddComment />
+      <AddComment
+        id={id}
+        title={title}
+        comments={comments}
+        category={category}
+        description={description}
+        upvotes={upvotes}
+        status={status}
+     
+        />
+        
     </>
   );
 };

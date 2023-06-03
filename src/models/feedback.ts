@@ -2,7 +2,8 @@ export interface Comments {
     id:number;
     content:string;
     user: User
-    replies?: Replies[];
+    replies: Replies[];
+    showReply: boolean;
 }
 
 export interface User {
@@ -16,14 +17,6 @@ export interface Replies {
     user: User;
 }
 
-export interface ProductRequests {
-    productRequests: Feedback
-}
-
-export interface Data {
-    currentUser: User,
-    productRequests: ProductRequests[],
-}
 
 interface Feedback {
     

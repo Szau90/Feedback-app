@@ -103,8 +103,7 @@ const EditFeedbackForm: React.FC<{
           </p>
           <input
             type="text"
-            defaultValue={title}
-            value={enteredTitle}
+            value={title && enteredTitle}
             onChange={titleChangeHandler}
             onBlur={titleBlurHandler}
             className="h-[48px] w-[279px] bg-custom-very-light-gray px-5 text-[13px] outline-none md:w-[456px]"
@@ -163,7 +162,6 @@ const EditFeedbackForm: React.FC<{
             etc.
           </p>
           <textarea
-            defaultValue={description}
             value={enteredDescription}
             onChange={descriptionChangeHandler}
             onBlur={descriptionBlurHandler}

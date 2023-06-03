@@ -14,13 +14,7 @@ const FeedbackList: React.FC<{
 }> = (props) => {
   const { id, title, comments, category, description, upvotes, status } = props;
 
-  const [hasComment, setHasComment] = useState(false);
 
-  useEffect(() => {
-    if (comments) {
-      setHasComment(true);
-    }
-  }, [comments]);
 
   const router = useRouter();
 
@@ -39,6 +33,19 @@ const FeedbackList: React.FC<{
 
   const roadmap = router.pathname === "/roadmap";
   const border = roadmap ? ` ${borderColor}` : "";
+
+  let commentsLength = comments ? comments.length : 0;
+  let replyLength = 0;
+
+  if (comments) {
+    for (let i = 0; i < commentsLength; i++) {
+      if (comments[i].replies) {
+        replyLength += comments[i].replies.length;
+      }
+    }
+  }
+
+  const totalLength = commentsLength + replyLength;
 
   return (
     <>
@@ -100,7 +107,7 @@ const FeedbackList: React.FC<{
                   alt="comments"
                 />
                 <p className="ml-[9px] text-[13px] font-bold tracking-[-0.18px]">
-                  {!hasComment ? 0 : comments.length}
+                  {totalLength}
                 </p>
               </div>
             </div>
