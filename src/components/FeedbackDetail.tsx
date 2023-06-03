@@ -28,7 +28,7 @@ export const FeedbackDetail: React.FC<{
   return (
     <>
       <div className="w-[327px] flex justify-between mt-[24px] md:w-[689px] md:mt-[56px] xl:w-[825px]">
-        <GoBackBtn label={"Go Back"} text="text-custom-light-gray" action={goBackHandler} />
+        <GoBackBtn label={"Go Back"} text="text-custom-gray" action={goBackHandler} />
         <div className="w-[119px] md:w-[142px]">
           <MainBtn
             label="Edit Feedback"
@@ -48,7 +48,7 @@ export const FeedbackDetail: React.FC<{
         status={status}
       />
    
-      <CommentList comments={comments} />
+      <CommentList comments={comments} feedbackId={id} />
       <AddComment
         id={id}
         title={title}

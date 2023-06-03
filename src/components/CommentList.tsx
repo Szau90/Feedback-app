@@ -5,10 +5,11 @@ import Link from "next/link";
 import React, { useState } from "react";
 import MainBtn from "./Ui/buttons/MainBtn";
 
-const CommentList: React.FC<{ comments: Comments[] }> = ({ comments }) => {
+const CommentList: React.FC<{ comments: Comments[], feedbackId: number; }> = ({ comments, feedbackId }) => {
   const [comment, setComment] = useState<Comments[]>([...comments]);
   const [enteredReply, setEnteredReply] = useState('')
   const [replyingTo, setReplyingTo] = useState('')
+  const [commentId, setCommentId] = useState(0)
 
   let commentsLength = comments ? comments.length : 0;
   let replyLength = 0;
@@ -30,6 +31,7 @@ const CommentList: React.FC<{ comments: Comments[] }> = ({ comments }) => {
    
       if (comment.id === commentId) {
         setReplyingTo(comment.user.username)
+        setCommentId(comment.id)
         return {
           ...comment,
           showReply: true, // Beállítjuk a válasz input láthatóságát true-ra
@@ -41,15 +43,15 @@ const CommentList: React.FC<{ comments: Comments[] }> = ({ comments }) => {
     setComment(updatedComments);
   };
 
-  const sendReply = async (reply:Replies, id:number) => {
-    const res = await fetch(`/api/replies/${id}`, {
+  const sendReply = async (reply: Replies, feedbackId: number, commentId: number) => {
+    const res = await fetch(`/api/replies/${feedbackId}/${commentId}`, {
       method: 'POST',
       body: JSON.stringify(reply),
       headers: {
         'Content-Type': 'application/json'
       }
     });
-  }
+  };
 
   const replyChangeHandler = (event:React.ChangeEvent<HTMLTextAreaElement>) => {
     setEnteredReply(event.target.value)
@@ -86,7 +88,7 @@ const CommentList: React.FC<{ comments: Comments[] }> = ({ comments }) => {
     });
 
     setComment(updatedComment)
-    sendReply(reply, 1 )
+    sendReply(reply, feedbackId, commentId)
   }
   return (
     <ul className="mt-[24px] rounded-[10px] bg-white ">
