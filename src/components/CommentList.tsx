@@ -65,13 +65,16 @@ const CommentList: React.FC<{ comments: Comments[], feedbackId: number; }> = ({ 
     event.preventDefault()
 
     const reply: Replies = {
+      id:Math.floor(Math.random()* 1000),
       content: enteredReply,
       replyingTo: replyingTo,
       user: {
         image: "/assets/user-images/image-zena.jpg",
         name: "Zena Kelley",
         username: "velvetround"
-      }
+      },
+      showReply:false,
+    
     };
   
     const updatedComment = comments.map((comment, id) => {
@@ -160,6 +163,9 @@ const CommentList: React.FC<{ comments: Comments[], feedbackId: number; }> = ({ 
                   key={index}
                   replies={comment.replies}
                   commentIndex={index}
+                  comments={comments}
+                  feedbackId={feedbackId}
+                  actualCommentId={comment.id}
                 />
               </div>
             </div>

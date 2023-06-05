@@ -1,10 +1,84 @@
-import { Replies } from "@/models/feedback";
+import { Comments, Replies } from "@/models/feedback";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React,{useState} from "react";
+import MainBtn from "./Ui/buttons/MainBtn";
 
-const ReplyList: React.FC<{ replies: Replies[]; commentIndex:number; }> = ({ replies, commentIndex }) => {
+const ReplyList: React.FC<{ replies: Replies[]; commentIndex:number;comments:Comments[]; feedbackId:number; actualCommentId:number; }> = ({ replies, commentIndex, comments, feedbackId, actualCommentId }) => {
+  const [comment, setComment] = useState<Comments[]>([...comments]);
+  const [enteredReply, setEnteredReply] = useState('')
+  const [replyingTo, setReplyingTo] = useState('')
+  const [commentId, setCommentId] = useState(0)
   const noreply = replies === undefined;
+
+  const sendReply = async (reply: Replies, feedbackId: number, replyId: number) => {
+    const res = await fetch(`/api/replies/${feedbackId}/${replyId}`, {
+      method: 'POST',
+      body: JSON.stringify(reply),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  };
+
+  const replyChangeHandler = (event:React.ChangeEvent<HTMLTextAreaElement>) => {
+    setEnteredReply(event.target.value)
+    
+  }
+  const handleReply = (commentId: number,replyId: number) => {
+    const updatedComments:Comments[] = comments.map((comment) => {
+   
+      if (comment.id === commentId) {
+      comment.replies.map((reply)=> {
+        if (reply.id === replyId) {
+          return {
+            ...reply,
+            showReply: true, // Beállítjuk a válasz input láthatóságát true-ra
+          };
+        }
+        return reply;
+      })
+        
+      }
+      return comment;
+    })
+
+    setComment(updatedComments);
+  };
+
+  const submitHandler = (event:React.FormEvent) => {
+
+    event.preventDefault()
+
+    const reply: Replies = {
+      id:Math.floor(Math.random()* 1000),
+      content: enteredReply,
+      replyingTo: replyingTo,
+      user: {
+        image: "/assets/user-images/image-zena.jpg",
+        name: "Zena Kelley",
+        username: "velvetround"
+      },
+      showReply:false,
+    };
+  
+    const updatedComment = comment.map((comment, id) => {
+      
+      if (comment.id === id) {
+        return {
+          ...comment,
+          replies: [...comment.replies, reply],
+          showReply: false, // Beállítjuk a válasz input láthatóságát false-ra
+        };
+        
+      }
+      return comment;
+    });
+
+    setComment(updatedComment)
+    sendReply(reply, feedbackId, commentId)
+  }
+
   const allReplies =
     !noreply &&
     replies.map((reply, index) => (
@@ -32,12 +106,12 @@ const ReplyList: React.FC<{ replies: Replies[]; commentIndex:number; }> = ({ rep
                   @{reply.user.username}
                 </li>
               </div>
-              <Link
-                href={"/"}
+              <button
+                onClick={()=> handleReply(actualCommentId, reply.id)}
                 className="text-[13px] font-bold text-custom-dark-blue "
               >
                 Reply
-              </Link>
+              </button>
             </div>
             <li className="text-[13px] text-custom-gray md:ml-[71px] md:w-[508px] md:text-[15px] xl:w-[550px]">
               <span className="font-bold text-custom-purple md:text-[15px]">
@@ -45,6 +119,25 @@ const ReplyList: React.FC<{ replies: Replies[]; commentIndex:number; }> = ({ rep
               </span>
               {reply.content}
             </li>
+            {reply.showReply && (
+                    <form
+                      onSubmit={submitHandler}
+                      className="ml-[72px] flex  flex-row  gap-[16px]"
+                    >
+                      <textarea 
+                      className="resize-none rounded-[10px] border border-custom-dark-blue bg-custom-very-light-gray  text-body1 font-normal text-custom-very-dark-gray outline-none xl:h-[80px] xl:w-[556px]"
+                      onChange={replyChangeHandler}
+                      />
+                      <div className="w-[117px]">
+                        <MainBtn
+                          btnType="submit"
+                          background="bg-custom-purple"
+                          action={() => {}}
+                          label="Post Reply"
+                        />
+                      </div>
+                    </form>
+                  )}
           </div>
         </div>
       </React.Fragment>

@@ -12,9 +12,11 @@ export interface User {
         username:string;
 }
 export interface Replies {
+    id:number;
     content:string;
     replyingTo:string;
     user: User;
+    showReply: boolean;
 }
 
 
