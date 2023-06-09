@@ -48,17 +48,8 @@ export const FeedbackDetail: React.FC<{
         status={status}
       />
    
-      <CommentList comments={comments} feedbackId={id} />
-      <AddComment
-        id={id}
-        title={title}
-        comments={comments}
-        category={category}
-        description={description}
-        upvotes={upvotes}
-        status={status}
-     
-        />
+      <CommentList feedbackId={id} />
+      <AddComment id={id}/>
         
     </>
   );

@@ -30,7 +30,7 @@ const AddFeedbackForm = () => {
         setSelectedValue(option);
       };
       const formData = {
-        id:18,
+        id:Math.floor(Math.random()*10000),
         category: selectedValue,
         description: enteredDescription,
         status: "suggestion",
@@ -123,6 +123,7 @@ const AddFeedbackForm = () => {
                   <div className="md:h-[44px] md:w-[144px]">
                     <MainBtn
                       action={() => {}}
+                      btnType="submit"
                       label="Add Feedback"
                       background="bg-custom-purple"
                     />

@@ -20,7 +20,8 @@
             "image": "/assets/user-images/image-suzanne.jpg",
             "name": "Suzanne Chang",
             "username": "upbeat1811"
-          }
+          },
+          "replies":[]
         },
         {
           "id": 2,
@@ -29,7 +30,8 @@
             "image": "/assets/user-images/image-thomas.jpg",
             "name": "Thomas Hood",
             "username": "brawnybrave"
-          }
+          },
+          "replies":[]
         }
       ]
     },
@@ -48,7 +50,8 @@
             "image": "/assets/user-images/image-elijah.jpg",
             "name": "Elijah Moss",
             "username": "hexagon.bestagon"
-          }
+          },
+          "replies":[]
         },
         {
           "id": 4,
@@ -60,6 +63,7 @@
           },
           "replies": [
             {
+              "id":1,
               "content": "While waiting for dark mode, there are browser extensions that will also do the job. Search for 'dark theme' followed by your browser. There might be a need to turn off the extension for sites with naturally black backgrounds though.",
               "replyingTo": "hummingbird1",
               "user": {
@@ -69,6 +73,7 @@
               }
             },
             {
+              "id":2,
               "content": "Good point! Using any kind of style extension is great and can be highly customizable, like the ability to change contrast and brightness. I'd prefer not to use one of such extensions, however, for security and privacy reasons.",
               "replyingTo": "annev1990",
               "user": {
@@ -96,7 +101,8 @@
             "image": "/assets/user-images/image-george.jpg",
             "name": "George Partridge",
             "username": "soccerviewer8"
-          }
+          },
+          "replies":[]
         }
       ]
     },
@@ -115,7 +121,8 @@
             "image": "/assets/user-images/image-javier.jpg",
             "name": "Javier Pollard",
             "username": "warlikeduke"
-          }
+          },
+          "replies":[]
         },
         {
           "id": 7,
@@ -124,7 +131,8 @@
             "image": "/assets/user-images/image-roxanne.jpg",
             "name": "Roxanne Travis",
             "username": "peppersprime32"
-          }
+          },
+          "replies":[]
         }
       ]
     },
@@ -146,6 +154,7 @@
           },
           "replies": [
             {
+              "id":1,
               "content": "Bumping this. It would be good to have a tab with a feed of people I follow so it's easy to see what challenges they’ve done lately. I learn a lot by reading good developers' code.",
               "replyingTo": "arlen_the_marlin",
               "user": {
@@ -163,7 +172,8 @@
             "image": "/assets/user-images/image-jackson.jpg",
             "name": "Jackson Barker",
             "username": "countryspirit"
-          }
+          },
+          "replies":[]
         }
       ]
     },
@@ -180,7 +190,7 @@
       "title": "More comprehensive reports",
       "category": "feature",
       "upvotes": 123,
-      "status": "planned",
+      "status": "Planned",
       "description": "It would be great to see a more detailed breakdown of solutions.",
       "comments": [
         {
@@ -208,7 +218,7 @@
       "title": "Learning paths",
       "category": "feature",
       "upvotes": 28,
-      "status": "planned",
+      "status": "Planned",
       "description": "Sequenced projects for different goals to help people improve.",
       "comments": [
         {
@@ -227,7 +237,7 @@
       "title": "One-click portfolio generation",
       "category": "feature",
       "upvotes": 62,
-      "status": "in-progress",
+      "status": "In-Progress",
       "description": "Add ability to create professional looking portfolio from profile.",
       "comments": [
         {
@@ -246,7 +256,7 @@
       "title": "Bookmark challenges",
       "category": "feature",
       "upvotes": 31,
-      "status": "in-progress",
+      "status": "In-Progress",
       "description": "Be able to bookmark challenges to take later on.",
       "comments": [
         {
@@ -265,7 +275,7 @@
       "title": "Animated solution screenshots",
       "category": "bug",
       "upvotes": 9,
-      "status": "in-progress",
+      "status": "In-Progress",
       "description": "Screenshots of solutions with animations don’t display correctly."
     },
     {
@@ -273,7 +283,7 @@
       "title": "Add micro-interactions",
       "category": "enhancement",
       "upvotes": 71,
-      "status": "live",
+      "status": "Live",
       "description": "Small animations at specific points can add delight.",
       "comments": [
         {

@@ -14,7 +14,7 @@ const Roadmap = ({
   feedback,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const statusPlanned = feedback
-    .filter((f) => f.status === "planned")
+    .filter((f) => f.status === "Planned")
     .map((f) => (
       <RoadmapItem
         key={f.id}
@@ -28,7 +28,7 @@ const Roadmap = ({
       />
     ));
   const statusLive = feedback
-    .filter((f) => f.status === "live")
+    .filter((f) => f.status === "Live")
     .map((f) => (
       <RoadmapItem
         key={f.id}
@@ -42,7 +42,7 @@ const Roadmap = ({
       />
     ));
   const statusInProgress = feedback
-    .filter((f) => f.status === "in-progress")
+    .filter((f) => f.status === "In-Progress")
     .map((f) => (
       <RoadmapItem
         key={f.id}

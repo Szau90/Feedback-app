@@ -2,6 +2,10 @@ import { Comments } from "@/models/feedback";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import {
+  selectCommentsLength,
+  selectRepliesLength,
+} from "../store/commentSelector";
 
 const FeedbackList: React.FC<{
   id: number;
@@ -13,6 +17,8 @@ const FeedbackList: React.FC<{
   status: string;
 }> = (props) => {
   const { id, title, comments, category, description, upvotes, status } = props;
+
+  
 
 
 

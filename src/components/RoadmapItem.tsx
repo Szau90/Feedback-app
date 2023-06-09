@@ -32,14 +32,14 @@ const RoadmapItem: React.FC<{
   const borderColor = classNames({
     "border-t-[6px]": true,
     "rounded-[6px]":true,
-    "border-custom-purple": status === "in-progress",
-    "border-custom-light-blue": status === "live",
-    "border-custom-light-orange": status === "planned",
+    "border-custom-purple": status === "In-Progress",
+    "border-custom-light-blue": status === "Live",
+    "border-custom-light-orange": status === "Planned",
   });
   const bgColor = classNames({
-    "bg-custom-purple": status === "in-progress",
-    "bg-custom-light-blue": status === "live",
-    "bg-custom-light-orange": status === "planned",
+    "bg-custom-purple": status === "In-Progress",
+    "bg-custom-light-blue": status === "Live",
+    "bg-custom-light-orange": status === "Planned",
   });
   
   return (

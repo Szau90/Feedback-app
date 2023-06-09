@@ -1,69 +1,59 @@
 import { useState } from "react";
 import MainBtn from "./Ui/buttons/MainBtn";
-import useInput from "@/Hooks/use-input";
 import { Comments, Replies } from "@/models/feedback";
-import Feedback from "@/models/feedback";
-import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { addComment } from "@/store/commentsSlice";
 
 const AddComment: React.FC<{
   id: number;
-  title: string;
-  comments: Comments[];
-  category: string;
-  description: string;
-  upvotes: number;
-  status: string;
-  
-}> = ({id, title, comments, category, description, upvotes, status}) => {
+}> = ({ id }) => {
   const [count, setCount] = useState(250);
-  const [enteredComment, setEnteredComment] = useState('')
-
-
- 
+  const [enteredComment, setEnteredComment] = useState("");
+  const dispatch = useDispatch();
 
   const changeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const initalValue = 250;
     const chars = event.target.value.length;
     const charsLeft = initalValue - chars;
     setCount(charsLeft);
-    setEnteredComment(event.target.value)
-    
+    setEnteredComment(event.target.value);
   };
 
+  const comment: Comments = {
+    id: Math.floor(Math.random() * 10000),
+    content: enteredComment,
+    user: {
+      image: "/assets/user-images/image-zena.jpg",
+      name: "Zena Kelley",
+      username: "velvetround",
+    },
+    replies: [],
+    showReply: false,
+  };
 
-
-  
-
-const comment:Comments = {
-  id: 155,
-  content: enteredComment,
-  user: {
-    image: "/assets/user-images/image-zena.jpg",
-    name: "Zena Kelley",
-    username: "velvetround",
-  },
-  replies:[],
-  showReply: false,
-  }
-
-
-
-  const sendComment = async (comment:Comments, id:number) => {
+  const sendComment = async (comment: Comments, id: number) => {
     const res = await fetch(`/api/comments/${id}`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(comment),
       headers: {
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     });
-  }
 
-  const submitHandler = (event:React.FormEvent) => {
-    event.preventDefault()
+    if (res.ok) {
+      const updatedComment = await res.json();
+      return updatedComment;
+    } else {
+      throw new Error("Reply could not be sent.");
+    }
+  };
 
-    sendComment(comment, id)
-    
-  }
+  const submitHandler = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    sendComment(comment, id);
+    dispatch(addComment(comment));
+  };
 
   return (
     <>
@@ -78,7 +68,6 @@ const comment:Comments = {
             className="h-[80px] w-[279px] resize-none bg-custom-very-light-gray p-3 text-body3 font-normal outline-none md:w-[623px] md:text-body2 xl:w-[759px]"
             onChange={changeHandler}
             value={enteredComment}
-           
           />
           <div className="mt-[16px] flex w-[279px] items-center justify-between md:w-[623px] xl:w-[759px]">
             <p className="text-body3 font-normal text-custom-gray md:text-body2">
@@ -87,7 +76,7 @@ const comment:Comments = {
             <div className="w-[119px] md:w-[142px]">
               <MainBtn
                 label="Post Comment"
-                action={() =>{}}
+                action={() => {}}
                 background="bg-custom-purple"
                 btnType="submit"
               />

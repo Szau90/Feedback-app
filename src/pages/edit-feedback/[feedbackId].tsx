@@ -37,7 +37,7 @@ const EditFeedback = ({
         <div className="mt-[34px] w-[327px] md:w-[540px]">
           <GoBackBtn
             action={goBack}
-            text="text-custom-light-gray"
+            text="text-custom-gray"
             label="Go Back"
           />
         </div>
@@ -80,12 +80,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   const collection = db.collection("product-requests");
 
-  const result = collection.find<Feedback>({}).toArray();
+  const result = await collection.find<Feedback>({}).toArray(); 
 
-  const paths = (await result).map((i) => ({
+  const paths = result.map((i) => ({
     params: { feedbackId: i.id.toString() },
   }));
-  return { paths, fallback: false };
+
+  return { paths, fallback: "blocking" };
 };
 
 export const getStaticProps: GetStaticProps<{

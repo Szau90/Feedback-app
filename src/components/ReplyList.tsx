@@ -1,91 +1,104 @@
 import { Comments, Replies } from "@/models/feedback";
 import Image from "next/image";
-import Link from "next/link";
-import React,{useState} from "react";
+import React, { useEffect, useState } from "react";
 import MainBtn from "./Ui/buttons/MainBtn";
+import {
+  fetchComments,
+  setComments,
+  handleReplyToReply,
+  sendReplyToReply
+} from "@/store/commentsSlice";
+import { useAppDispatch } from "@/store/store";
 
-const ReplyList: React.FC<{ replies: Replies[]; commentIndex:number;comments:Comments[]; feedbackId:number; actualCommentId:number; }> = ({ replies, commentIndex, comments, feedbackId, actualCommentId }) => {
-  const [comment, setComment] = useState<Comments[]>([...comments]);
-  const [enteredReply, setEnteredReply] = useState('')
-  const [replyingTo, setReplyingTo] = useState('')
-  const [commentId, setCommentId] = useState(0)
-  const noreply = replies === undefined;
 
-  const sendReply = async (reply: Replies, feedbackId: number, replyId: number) => {
-    const res = await fetch(`/api/replies/${feedbackId}/${replyId}`, {
-      method: 'POST',
-      body: JSON.stringify(reply),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+const ReplyList: React.FC<{
+  replies: Replies[];
+  commentIndex: number;
+  comments: Comments[];
+  feedbackId: number;
+  actualCommentId: number;
+}> = ({ replies, commentIndex, comments, feedbackId, actualCommentId }) => {
+  const dispatch = useAppDispatch();
+
+  const [enteredReply, setEnteredReply] = useState("");
+
+  const replyChangeHandler = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setEnteredReply(event.target.value);
   };
 
-  const replyChangeHandler = (event:React.ChangeEvent<HTMLTextAreaElement>) => {
-    setEnteredReply(event.target.value)
-    
-  }
-  const handleReply = (commentId: number,replyId: number) => {
-    const updatedComments:Comments[] = comments.map((comment) => {
+  const clickReplyHandler = (commentId: number, replyId: number) => {
+    const data = { commentId, replyId };
+    dispatch(handleReplyToReply(data));
+  };
+
+  const submitHandler = (
+    event: React.FormEvent,
+    replyingTo: string,
+    commentId: number,
+    replyId: number
+  ) => {
+    event.preventDefault();
+
+    const handleReplydata = { commentId, replyId };
    
-      if (comment.id === commentId) {
-      comment.replies.map((reply)=> {
-        if (reply.id === replyId) {
-          return {
-            ...reply,
-            showReply: true, // Beállítjuk a válasz input láthatóságát true-ra
-          };
-        }
-        return reply;
-      })
-        
-      }
-      return comment;
-    })
-
-    setComment(updatedComments);
-  };
-
-  const submitHandler = (event:React.FormEvent) => {
-
-    event.preventDefault()
 
     const reply: Replies = {
-      id:Math.floor(Math.random()* 1000),
+      id: Math.floor(Math.random() * 1000),
       content: enteredReply,
       replyingTo: replyingTo,
       user: {
         image: "/assets/user-images/image-zena.jpg",
         name: "Zena Kelley",
-        username: "velvetround"
+        username: "velvetround",
       },
-      showReply:false,
+      showReply: false,
     };
-  
-    const updatedComment = comment.map((comment, id) => {
-      
-      if (comment.id === id) {
+
+    const updatedComments = comments.map((comment) => {
+      if (comment.id === actualCommentId) {
+        const updatedReplies = comment.replies.map((existingReply) => {
+          if (existingReply.id === replyId) {
+            return {
+              ...existingReply,
+              showReply: false,
+            };
+          }
+          return existingReply;
+        });
+
         return {
           ...comment,
-          replies: [...comment.replies, reply],
-          showReply: false, // Beállítjuk a válasz input láthatóságát false-ra
+          replies: [...updatedReplies, reply],
         };
-        
       }
       return comment;
     });
 
-    setComment(updatedComment)
-    sendReply(reply, feedbackId, commentId)
-  }
+    const sendReplyData = {reply, feedbackId, commentId}
 
-  const allReplies =
-    !noreply &&
-    replies.map((reply, index) => (
+    dispatch(setComments(updatedComments));
+
+    dispatch(sendReplyToReply(sendReplyData));
+
+    setEnteredReply("");
+   
+    dispatch(handleReplyToReply(handleReplydata));
+  };
+
+ 
+
+  return (
+    <>
+      <ul className="relative mt-[24px] !border-none  md:flex md:flex-col md:items-end">
+        {replies.map((reply, index) => (
       <React.Fragment key={index}>
-        { index === 0 && commentIndex !==0 && <div className="w-[1px] h-[216px] absolute  inset-x-0 md:-top-20 md:left-5 bg-custom-gray opacity-20 md:h-[267px]"></div>}
+        {index === 0 && commentIndex !== 0 && (
+          <div className="absolute inset-x-0 h-[216px]  w-[1px] bg-custom-gray opacity-20 md:-top-20 md:left-5 md:h-[267px]"></div>
+        )}
         <div
-          className={`flex h-[180px] w-[280px] flex-col mb-[16px] items-end md:items-start justify-start md:w-[578px] xl:w-[714px] `}
+          className={`mb-[16px] flex h-fit w-[280px] flex-col items-end justify-start md:w-[578px] md:items-start xl:w-[714px] `}
         >
           <div className="w-[256px] md:w-[578px] xl:w-[714px]">
             <div className="mb-[16px] flex ">
@@ -107,7 +120,7 @@ const ReplyList: React.FC<{ replies: Replies[]; commentIndex:number;comments:Com
                 </li>
               </div>
               <button
-                onClick={()=> handleReply(actualCommentId, reply.id)}
+                onClick={() => clickReplyHandler(actualCommentId, reply.id)}
                 className="text-[13px] font-bold text-custom-dark-blue "
               >
                 Reply
@@ -120,33 +133,36 @@ const ReplyList: React.FC<{ replies: Replies[]; commentIndex:number;comments:Com
               {reply.content}
             </li>
             {reply.showReply && (
-                    <form
-                      onSubmit={submitHandler}
-                      className="ml-[72px] flex  flex-row  gap-[16px]"
-                    >
-                      <textarea 
-                      className="resize-none rounded-[10px] border border-custom-dark-blue bg-custom-very-light-gray  text-body1 font-normal text-custom-very-dark-gray outline-none xl:h-[80px] xl:w-[556px]"
-                      onChange={replyChangeHandler}
-                      />
-                      <div className="w-[117px]">
-                        <MainBtn
-                          btnType="submit"
-                          background="bg-custom-purple"
-                          action={() => {}}
-                          label="Post Reply"
-                        />
-                      </div>
-                    </form>
-                  )}
+              <form
+                onSubmit={(event) =>
+                  submitHandler(
+                    event,
+                    reply.user.username,
+                    actualCommentId,
+                    reply.id
+                  )
+                }
+                className="ml-[72px] flex  flex-row  gap-[16px]"
+              >
+                <textarea
+                  className="resize-none rounded-[10px] border border-custom-dark-blue bg-custom-very-light-gray  text-body1 font-normal text-custom-very-dark-gray outline-none xl:h-[80px] xl:w-[556px]"
+                  onChange={replyChangeHandler}
+                  value={enteredReply}
+                />
+                <div className="w-[117px]">
+                  <MainBtn
+                    btnType="submit"
+                    background="bg-custom-purple"
+                    action={() => {}}
+                    label="Post Reply"
+                  />
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </React.Fragment>
-    ));
-
-  return (
-    <>
-      <ul className="mt-[24px] !border-none md:flex  md:flex-col md:items-end relative">
-        {allReplies}
+    ))}
       </ul>
     </>
   );

@@ -48,16 +48,17 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const client = await MongoClient.connect(
     "mongodb+srv://Szau:FordMondeo12@cluster0.jfdopa9.mongodb.net/Product-feedback-app?retryWrites=true&w=majority"
   );
-  const db = client.db();
+const db = client.db();
 
   const collection = db.collection("product-requests");
 
-  const result = collection.find<Feedback>({}).toArray();
+  const result = await collection.find<Feedback>({}).toArray();
 
-  const paths = (await result).map((i) => ({
-    params: { feedbackId: i.id.toString()},
+  const paths = result.map((i) => ({
+    params: { feedbackId: i.id.toString() },
   }));
-  return { paths, fallback: false };
+
+  return { paths, fallback: "blocking" };
 };
 
 export const getStaticProps: GetStaticProps<{

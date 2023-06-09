@@ -9,6 +9,8 @@ import { Navigation } from "@/components/Ui/Navigation";
 import { SuggestionHeader } from "@/components/Ui/SuggestionsHeader";
 import { Nofeedback } from "@/components/Nofeedback";
 import { Layout } from "@/components/Layout/Layout";
+import { useDispatch } from 'react-redux';
+
 
 const jost = Jost({ subsets: ["latin"] });
 
@@ -18,9 +20,12 @@ const Home = ({
   feedback,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const statusArray = feedback.map((s) => s.status);
-  const planned = statusArray.filter((f) => f === "planned").length;
-  const inProgress = statusArray.filter((f) => f === "in-progress").length;
-  const live = statusArray.filter((f) => f === "live").length;
+  const planned = statusArray.filter((f) => f === "Planned").length;
+  const inProgress = statusArray.filter((f) => f === "In-Progress").length;
+  const live = statusArray.filter((f) => f === "Live").length;
+
+  
+
 
   const allFeedback = feedback
     .filter((f) => f.status === "suggestion")
