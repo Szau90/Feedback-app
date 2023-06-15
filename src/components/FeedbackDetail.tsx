@@ -1,5 +1,5 @@
 import FeedbackList from "./Feedbacklist";
-import CommentList from "./CommentList";
+import FeedbackComments from "./FeedbackComments";
 import Feedback, { Comments } from "@/models/feedback";
 import AddComment from "./AddComment";
 import MainBtn from "./Ui/buttons/MainBtn";
@@ -48,7 +48,7 @@ export const FeedbackDetail: React.FC<{
         status={status}
       />
    
-      <CommentList feedbackId={id} />
+      <FeedbackComments feedbackId={id} />
       <AddComment id={id}/>
         
     </>

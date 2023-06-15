@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export const SuggestionLabel = () => {
+export const SuggestionLabel:React.FC<{counter: number}> = ({counter}) => {
   return (
     <>
       <div className="mr-[30px] hidden gap-[16px] md:flex">
@@ -10,7 +10,7 @@ export const SuggestionLabel = () => {
           height={24}
           alt="suggestions"
         />
-        <h3 className="text-h3 text-white">6 Suggestions</h3>
+        <h3 className="text-h3 text-white">{counter} Suggestions</h3>
       </div>
     </>
   );

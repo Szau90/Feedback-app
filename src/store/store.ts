@@ -1,10 +1,14 @@
 import { configureStore, ThunkAction, Action,  } from "@reduxjs/toolkit";
 import  commensReducer from "./commentsSlice"
+import feedbackReducer from "./feedbackSlice"
+import uiReducer from "@/store/uiSlice"
 import { useDispatch } from 'react-redux'
 
 export const store = configureStore({
     reducer: {
         comments: commensReducer,
+        feedback: feedbackReducer,
+        ui: uiReducer,
     },
 })
 

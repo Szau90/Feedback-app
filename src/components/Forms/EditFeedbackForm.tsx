@@ -5,6 +5,9 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import useInput from "@/Hooks/use-input";
 import { json } from "stream/consumers";
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "@/store/store";
+import { setCategory, setStatus } from "@/store/uiSlice";
 
 const EditFeedbackForm: React.FC<{
   title: string;
@@ -17,14 +20,19 @@ const EditFeedbackForm: React.FC<{
 }> = ({ title, description, status, category, id, comments,upvotes }) => {
   const router = useRouter();
   
-  const [selectedCategory, setSelectedCategory] = useState<string>("Feature");
-  const [selectedStatus, setSelectedStatus] = useState<string>("Suggestion");
+  
+  const selectedStatus = useSelector((state: RootState) => state.ui.status)
+  const selectedCategory = useSelector((state: RootState) => state.ui.category)
+  const showDropdown = useSelector((state:RootState) => state.ui.showDropdownMenu )
+  const showSecondDropdown = useSelector((state:RootState) => state.ui.showSecondDropdown )
+
+  const dispatch = useAppDispatch()
 
   const handleCategoryChange = (option: string) => {
-    setSelectedCategory(option);
+    dispatch(setCategory(option))
   };
   const handleStatusChange = (option: string) => {
-    setSelectedStatus(option);
+    dispatch(setStatus(option))
   };
 
   const editFeedbackHandler = async (updateData: Feedback) => {
@@ -36,7 +44,11 @@ const EditFeedbackForm: React.FC<{
       },
     })
 
-    await res.json();
+    if (res.ok) {
+      await res.json();
+    }else {
+      throw new Error('could not be update feedback.')
+    }
   }
 
   const {
@@ -72,6 +84,11 @@ const EditFeedbackForm: React.FC<{
 
     editFeedbackHandler(formData)
 
+    resetName()
+    resetDescription()
+
+    router.push("/")
+
   };
 
   const handleDelete = async (id:number) => {
@@ -103,7 +120,7 @@ const EditFeedbackForm: React.FC<{
           </p>
           <input
             type="text"
-            value={title && enteredTitle}
+            value={enteredTitle}
             onChange={titleChangeHandler}
             onBlur={titleBlurHandler}
             className="h-[48px] w-[279px] bg-custom-very-light-gray px-5 text-[13px] outline-none md:w-[456px]"
@@ -127,7 +144,8 @@ const EditFeedbackForm: React.FC<{
               width="w-[279px] md:w-[456px]"
               height=" max-h-[250px]"
               selectedValue={selectedCategory}
-              handleChange={handleCategoryChange}
+              handleValueChange={handleCategoryChange}
+              showDropdown={showDropdown}
             />
           </div>
         </div>
@@ -149,7 +167,8 @@ const EditFeedbackForm: React.FC<{
               width="w-[279px] md:w-[456px]"
               height=" max-h-[250px]"
               selectedValue={selectedStatus}
-              handleChange={handleStatusChange}
+              handleValueChange={handleStatusChange}
+              showDropdown={showSecondDropdown}
             />
           </div>
         </div>

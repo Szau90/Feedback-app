@@ -63,7 +63,6 @@ export const sendReply = createAsyncThunk(
 
     if (res.ok) {
       const updatedReply = await res.json();
-
       return updatedReply;
     } else {
       throw new Error("Reply could not be sent.");

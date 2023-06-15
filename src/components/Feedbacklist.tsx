@@ -55,9 +55,9 @@ const FeedbackList: React.FC<{
 
   return (
     <>
-      <ul
+      <div
         onClick={clickHandler}
-        className={`${border}  mt-[20px]   cursor-pointer  xl:h-[151px] xl:w-[825px]`}
+        className={`${border}  mt-[20px] w-[327px]  cursor-pointer  xl:h-[151px] xl:w-[825px]`}
       >
         <li className=" box-border flex h-[200px] w-[327px] items-center justify-center rounded-lg border-0 bg-white md:h-[151px] md:w-[689px]  xl:w-[825px]">
           <div className="flex flex-col md:h-[95px] md:w-[625px] md:flex-row md:justify-between xl:w-[761px]">
@@ -119,7 +119,7 @@ const FeedbackList: React.FC<{
             </div>
           </div>
         </li>
-      </ul>
+      </div>
     </>
   );
 };

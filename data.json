@@ -183,7 +183,8 @@
       "category": "bug",
       "upvotes": 3,
       "status": "suggestion",
-      "description": "Challenge preview images are missing when you apply a filter."
+      "description": "Challenge preview images are missing when you apply a filter.",
+      "comments":[]
     },
     {
       "id": 7,
@@ -199,7 +200,8 @@
           "user": {
             "image": "/assets/user-images/image-victoria.jpg",
             "name": "Victoria Mejia",
-            "username": "arlen_the_marlin"
+            "username": "arlen_the_marlin",
+            "replies":[]
           }
         },
         {
@@ -208,7 +210,8 @@
           "user": {
             "image": "/assets/user-images/image-jackson.jpg",
             "name": "Jackson Barker",
-            "username": "countryspirit"
+            "username": "countryspirit",
+            "replies":[]
           }
         }
       ]
@@ -227,7 +230,8 @@
           "user": {
             "image": "/assets/user-images/image-george.jpg",
             "name": "George Partridge",
-            "username": "soccerviewer8"
+            "username": "soccerviewer8",
+            "replies":[]
           }
         }
       ]
@@ -246,7 +250,8 @@
           "user": {
             "image": "/assets/user-images/image-ryan.jpg",
             "name": "Ryan Welles",
-            "username": "voyager.344"
+            "username": "voyager.344",
+            "replies":[]
           }
         }
       ]
@@ -265,7 +270,8 @@
           "user": {
             "image": "/assets/user-images/image-suzanne.jpg",
             "name": "Suzanne Chang",
-            "username": "upbeat1811"
+            "username": "upbeat1811",
+            "replies":[]
           }
         }
       ]
@@ -276,7 +282,8 @@
       "category": "bug",
       "upvotes": 9,
       "status": "In-Progress",
-      "description": "Screenshots of solutions with animations don’t display correctly."
+      "description": "Screenshots of solutions with animations don’t display correctly.",
+      "comments":[]
     },
     {
       "id": 12,
@@ -292,7 +299,8 @@
           "user": {
             "image": "/assets/user-images/image-victoria.jpg",
             "name": "Victoria Mejia",
-            "username": "arlen_the_marlin"
+            "username": "arlen_the_marlin",
+            "replies":[]
           },
           "replies": [
             {
@@ -301,7 +309,8 @@
               "user": {
                 "image": "/assets/user-images/image-suzanne.jpg",
                 "name": "Suzanne Chang",
-                "username": "upbeat1811"
+                "username": "upbeat1811",
+                "replies":[]
               }
             }
           ]

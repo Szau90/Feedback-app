@@ -1,5 +1,8 @@
+import { RootState, useAppDispatch } from "@/store/store";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { toogleDropdown, setSortBy } from "@/store/uiSlice";
+
 
 const Dropdown: React.FC<{
   placeHolder: string;
@@ -10,8 +13,10 @@ const Dropdown: React.FC<{
   position: string;
   height: string;
   width: string;
-  selectedValue: string | null;
-  handleChange: (option:string) => void;
+  handleValueChange: (option:string) => void;
+  selectedValue: string;
+  showDropdown: boolean;
+
 }> = ({
   placeHolder,
   options,
@@ -21,15 +26,24 @@ const Dropdown: React.FC<{
   position,
   height,
   width,
+  handleValueChange,
   selectedValue,
-  handleChange,
+  showDropdown
+  
 }) => {
-  const [showmenu, setShowmenu] = useState(false);
- // const [selectedValue, setSelectedValue] = useState<null | string>(null);
+
+
+
+ 
+ 
+ const dispatch = useAppDispatch()
+
+
+
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    setShowmenu(!showmenu);
+    dispatch(toogleDropdown());
   };
 
   const getDisplay = () => {
@@ -39,18 +53,14 @@ const Dropdown: React.FC<{
     return placeHolder;
   };
 
-  /*const onItemClick = (option: string) => {
-    setSelectedValue(option);
-    return option;
-  };
-*/
+ 
   const isSelected = (options: string) => {
     if (!selectedValue) {
       return false;
     }
     return selectedValue === options;
   };
-
+console.log(selectedValue)
   return (
     <div className="dropdown-container relative h-full w-full text-left">
       <div
@@ -62,13 +72,13 @@ const Dropdown: React.FC<{
             {getDisplay()}
           </span>
         </div>
-        {showmenu && (
+        {showDropdown && (
           <div
             className={`dropdown-menu absolute ${position} ${height} ${width} translate-y-1 z-50 overflow-auto rounded-[10px] bg-white shadow-lg `}
           >
             {options.map((option) => (
               <div
-                onClick={() => handleChange(option)}
+                onClick={() => handleValueChange(option)}
                 key={option}
                 className={`dropdown-item flex cursor-pointer justify-between border-y-[1px] border-custom-light-gray px-[24px]  py-[12.125px] text-[#647196] last:border-none hover:text-custom-purple ${
                   isSelected(option) && "selected"

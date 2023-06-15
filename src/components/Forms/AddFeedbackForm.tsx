@@ -4,12 +4,25 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import Feedback from "@/models/feedback";
 import useInput from "@/Hooks/use-input";
+import { RootState, useAppDispatch } from "@/store/store";
+import { useSelector } from "react-redux";
+import { setCategory } from "@/store/uiSlice";
+
 
 const AddFeedbackForm = () => {
 
+  const dispatch = useAppDispatch()
+
+  const category = useSelector((state:RootState)=> state.ui.category)
+  const showDropdown = useSelector((state:RootState) => state.ui.showDropdownMenu )
+
     const router = useRouter();
 
-    const [selectedValue, setSelectedValue] = useState<string>("Feature");
+    
+
+    const onCategoryChange = (option:string) => {
+      dispatch(setCategory(option))
+    }
     const {
         value: enteredTitle,
         isValid: enteredTitleIsValid,
@@ -26,12 +39,10 @@ const AddFeedbackForm = () => {
         inputBlurHandler: descriptionBlurHandler,
         reset: resetDescription,
       } = useInput((value) => value.trim() !== "");
-      const onItemClick = (option: string) => {
-        setSelectedValue(option);
-      };
+   
       const formData = {
         id:Math.floor(Math.random()*10000),
-        category: selectedValue,
+        category: category,
         description: enteredDescription,
         status: "suggestion",
         title: enteredTitle,
@@ -47,7 +58,11 @@ const AddFeedbackForm = () => {
             'Content-Type': 'application/json',
           },
         })
-        await res.json();
+        if (res.ok) {
+          await res.json()
+        }else {
+          throw new Error('Cant add new feedback')
+        }
     
        
       }
@@ -100,8 +115,10 @@ const AddFeedbackForm = () => {
                       position="top-[60px] left-0"
                       width="w-[279px] md:w-[456px]"
                       height=" max-h-[250px]"
-                      selectedValue={selectedValue}
-                      handleChange={onItemClick}
+                      handleValueChange={onCategoryChange}
+                      selectedValue={category}
+                      showDropdown={showDropdown}
+                    
                     />
                   </div>
                 </div>

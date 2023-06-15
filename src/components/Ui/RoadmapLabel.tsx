@@ -4,9 +4,8 @@ export const RoadmapLabel: React.FC<{
   planned: number;
   inProgress: number;
   live: number;
-}> = (props) => {
-  const { planned, inProgress, live } = props;
-
+}> = ({ planned, inProgress, live }) => {
+  
   return (
     <>
       <div className="flex h-[178px] w-[223px] flex-col items-center justify-center rounded-[10px] bg-white xl:w-[255px] ">

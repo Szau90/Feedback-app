@@ -2,7 +2,12 @@ import { useRouter } from "next/router";
 import Dropdown from "./Dropdown";
 import { SuggestionLabel } from "./SuggestionLabel";
 import MainBtn from "./buttons/MainBtn";
-export const SuggestionHeader = () => {
+import { useAppDispatch, RootState } from "@/store/store";
+import { setSortBy } from "@/store/uiSlice";
+import { useSelector } from "react-redux";
+
+
+ export const SuggestionHeader:React.FC<{counter:number}> = ({counter}) => {
   const options = [
     "Most Upvotes",
     "Least Upvotes",
@@ -11,13 +16,26 @@ export const SuggestionHeader = () => {
   ];
   const router = useRouter()
 
+  const dispatch = useAppDispatch()
+
+  const selectedValue = useSelector((state:RootState) => state.ui.sortBy )
+  const showDropdown = useSelector((state:RootState) => state.ui.showDropdownMenu )
+
+  
+  
+
   const addFeedbackBtnHandler = () => {
     router.push('/new-feedback')
   }
+
+
+const handleSortBy = (option: string) => {
+  dispatch(setSortBy(option))
+ }
   return (
     <>
       <div className="flex h-[56px] w-full items-center justify-between bg-custom-very-dark-blue px-[24px] md:mt-[40px] md:h-[72px] md:w-[689px] md:justify-center md:rounded-[10px] md:pr-[0px] xl:w-[825px] ">
-        <SuggestionLabel />
+        <SuggestionLabel counter={counter} />
         <div className="flex w-[189px] flex-row items-center md:w-[300px] xl:w-[425px]">
           <span className=" w-[40px] text-[11px] font-normal text-custom-light-gray md:w-[50px] md:text-[14px]">
             Sort by:
@@ -32,6 +50,10 @@ export const SuggestionHeader = () => {
               position="top-9"
               width="w-[255px]"
               height=" max-h-[200px]"
+              handleValueChange={handleSortBy}
+              selectedValue={selectedValue}
+              showDropdown={showDropdown}
+             
             />
           </div>
         </div>
@@ -46,3 +68,4 @@ export const SuggestionHeader = () => {
     </>
   );
 };
+
