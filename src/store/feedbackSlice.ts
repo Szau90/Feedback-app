@@ -1,15 +1,24 @@
 import Feedback from "@/models/feedback"
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
+export interface User {
+    id: number;
+    upvotedFeedbacks: number[]
+}
+
 export interface FeedbackState {
     feedback: Feedback[];
     status: string;
     error: string | undefined;
     category: string;
+    Users: User[];
+    upvote:0;
   }
 
-  interface FilterFeedbackPayload {
-    category: string;
+
+  interface setUpvotesPayload {
+    feedbackId:number;
+    upvote:number;
   }
 
 export const fetchFeedback = createAsyncThunk('feedback/fetchfeedback',
@@ -49,6 +58,9 @@ const initialState:FeedbackState = {
     status: 'idle',
     error: '',
     category: 'all',
+    Users: [],
+    upvote: 0
+
 
 }
 
@@ -59,6 +71,24 @@ const feedbackSlice = createSlice({
         filterFeedback: (state, action) => {
             state.category = action.payload
         },
+        setUpvotes: (state, action:PayloadAction<setUpvotesPayload>) => {
+        const {feedbackId, upvote} = action.payload
+        
+        const updatedUpvotes = state.feedback.map((feed) => {
+            if(feed.id === feedbackId){
+                return {
+                    ...feed,
+                    upvotes: upvote
+                }
+            }else {
+                return{
+                    ...feed
+                }
+            }
+        } )
+        
+        state.feedback = updatedUpvotes
+        }
     },
     extraReducers(builder) {
         builder
@@ -87,6 +117,6 @@ const feedbackSlice = createSlice({
     }
 })
 
-export const {filterFeedback} = feedbackSlice.actions;
+export const {filterFeedback, setUpvotes} = feedbackSlice.actions;
 
 export default feedbackSlice.reducer;

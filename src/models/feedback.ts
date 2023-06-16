@@ -7,6 +7,7 @@ export interface Comments {
 }
 
 export interface User {
+        id:number;   
         image:string;
         name:string;
         username:string;
@@ -30,8 +31,7 @@ interface Feedback {
         status:string;
         description: string;
         comments: Comments[];
-
-       
+              
     }
 
 export default Feedback;

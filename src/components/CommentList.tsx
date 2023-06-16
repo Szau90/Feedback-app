@@ -32,6 +32,7 @@ const CommentList: React.FC<{
       content: enteredReply,
       replyingTo: replyingTo,
       user: {
+        id:999,
         image: "/assets/user-images/image-zena.jpg",
         name: "Zena Kelley",
         username: "velvetround",

@@ -9,6 +9,7 @@ const FeedbackSchema = new Schema({
         upvotes:Number,
         status:String,
         description: String,
+        upvotedBy:[String],
         comments: [
             {
                 id:Number,

@@ -6,6 +6,10 @@ import {
   selectCommentsLength,
   selectRepliesLength,
 } from "../store/commentSelector";
+import { User } from "@/models/feedback";
+import { RootState, useAppDispatch } from "@/store/store";
+import { fetchFeedback, setUpvotes } from "@/store/feedbackSlice";
+import { useSelector } from "react-redux";
 
 const FeedbackList: React.FC<{
   id: number;
@@ -18,7 +22,22 @@ const FeedbackList: React.FC<{
 }> = (props) => {
   const { id, title, comments, category, description, upvotes, status } = props;
 
+const dispatch = useAppDispatch()
+
+
+  const data = {feedbackId: id, upvote:upvotes}
+ useEffect(()=>{
+  dispatch(setUpvotes(data))
+ },[])
   
+  
+const user= {
+  id:999,
+  image: "/assets/user-images/image-zena.jpg",
+  name: "Zena Kelley",
+  username: "velvetround",
+}
+
 
 
 
@@ -27,6 +46,26 @@ const FeedbackList: React.FC<{
   const clickHandler = () => {
     router.push(`/${id}`);
   };
+
+  const handleUpvote = async (user:User, feedbackId:number) => {
+    try {
+    const res = await fetch(`/api/upvote/${feedbackId}`, {
+      method: "POST",
+      body: JSON.stringify(user),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+  
+    if (!res.ok) {
+      throw new Error('you alredy upvoted this feedback!')
+    }
+    await res.json()
+
+   } catch (error) {
+    console.log(error)
+   }
+  }
 
   const borderColor =
     status === "in-progress"
@@ -56,7 +95,7 @@ const FeedbackList: React.FC<{
   return (
     <>
       <div
-        onClick={clickHandler}
+       
         className={`${border}  mt-[20px] w-[327px]  cursor-pointer  xl:h-[151px] xl:w-[825px]`}
       >
         <li className=" box-border flex h-[200px] w-[327px] items-center justify-center rounded-lg border-0 bg-white md:h-[151px] md:w-[689px]  xl:w-[825px]">
@@ -69,9 +108,9 @@ const FeedbackList: React.FC<{
                 alt="arrow up"
                 style={{ objectFit: "contain" }}
               />
-              <p className="text-[13px] font-bold tracking-[-0.18px]">
+              <button type="button" onClick={() => handleUpvote(user, id)} className="text-[13px] font-bold tracking-[-0.18px]">
                 {upvotes}
-              </p>
+              </button>
             </div>
             <div className="flex-col  md:w-[476px] xl:mr-[120px]">
               { roadmap &&
