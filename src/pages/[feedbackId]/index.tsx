@@ -37,6 +37,7 @@ const DetailPage = ({
               description={feedback.description}
               upvotes={feedback.upvotes}
               status={feedback.status}
+              isUpvoted={feedback.isUpvoted}
             />
         
       </main>

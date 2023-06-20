@@ -31,6 +31,8 @@ interface Feedback {
         status:string;
         description: string;
         comments: Comments[];
+        upvotedBy: number[];
+        isUpvoted:boolean;
               
     }
 

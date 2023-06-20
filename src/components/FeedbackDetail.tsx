@@ -14,7 +14,8 @@ export const FeedbackDetail: React.FC<{
   description: string;
   upvotes: number;
   status: string;
-}> = ({ id, title, comments, category, description, upvotes, status }) => {
+  isUpvoted: boolean;
+}> = ({ id, title, comments, category, description, upvotes, status, isUpvoted }) => {
 
   const router = useRouter()
   const editBtnHandler = () => {
@@ -46,6 +47,7 @@ export const FeedbackDetail: React.FC<{
         description={description}
         upvotes={upvotes}
         status={status}
+        isUpvoted={isUpvoted}
       />
    
       <FeedbackComments feedbackId={id} />

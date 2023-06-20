@@ -10,7 +10,7 @@ export default async function handler(
     const { feedbackId } = req.query;
     const user  = req.body;
 
-    console.log(user.id)
+    
 
     const client = await MongoClient.connect(
       "mongodb+srv://Szau:FordMondeo12@cluster0.jfdopa9.mongodb.net/Product-feedback-app?retryWrites=true&w=majority"
@@ -32,18 +32,17 @@ export default async function handler(
   
         if (!feedback.upvotedBy) {
           feedback.upvotedBy = [];
-        } else if (feedback.upvotedBy.includes(user.id)) {
-          return res
-            .status(400)
-            .json({ error: "You have already upvoted this feedback" });
         }
+
         
+      
         if(!feedback.upvotedBy.includes(user.id)){
             await feedbackCollection.updateOne(
                 { id: parsedFeedbackId },
                 {
                   $inc: { upvotes: 1 },
                   $push: { upvotedBy: user.id },
+                  $set: {isUpvoted: true},
                 }
               );
         
@@ -53,7 +52,20 @@ export default async function handler(
         
               res.status(200).json(updatedFeedback);
         }else {
-            return res.status(400).json({error:"You have already upvoted this feedback"})
+          await feedbackCollection.updateOne(
+            { id: parsedFeedbackId },
+            {
+              $inc: { upvotes: -1 },
+              $pull: { upvotedBy: user.id },
+              $set: {isUpvoted: false},
+            }
+          );
+    
+          const updatedFeedback = await feedbackCollection.findOne({
+            id: parsedFeedbackId,
+          });
+    
+          res.status(200).json(updatedFeedback);
         }
         
       } else {

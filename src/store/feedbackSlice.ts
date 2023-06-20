@@ -12,13 +12,12 @@ export interface FeedbackState {
     error: string | undefined;
     category: string;
     Users: User[];
-    upvote:0;
   }
 
 
   interface setUpvotesPayload {
     feedbackId:number;
-    upvote:number;
+  
   }
 
 export const fetchFeedback = createAsyncThunk('feedback/fetchfeedback',
@@ -59,7 +58,8 @@ const initialState:FeedbackState = {
     error: '',
     category: 'all',
     Users: [],
-    upvote: 0
+
+
 
 
 }
@@ -71,24 +71,36 @@ const feedbackSlice = createSlice({
         filterFeedback: (state, action) => {
             state.category = action.payload
         },
-        setUpvotes: (state, action:PayloadAction<setUpvotesPayload>) => {
-        const {feedbackId, upvote} = action.payload
-        
-        const updatedUpvotes = state.feedback.map((feed) => {
-            if(feed.id === feedbackId){
-                return {
-                    ...feed,
-                    upvotes: upvote
+        setUpvotes: (state, action) => {
+            const { feedbackId, userId } = action.payload;
+
+            const updatedFeedback = state.feedback.map((feed) => {
+              
+              if (feed.id === feedbackId) {
+                if (!feed.upvotedBy) {
+                  feed.upvotedBy = [];
                 }
-            }else {
-                return{
-                    ...feed
+
+      
+                if (!feed.upvotedBy.includes(userId)) {
+                  feed.upvotes += 1;
+                  feed.upvotedBy.push(userId);
+                  feed.isUpvoted = true
+                
+                } else {
+                  feed.upvotes -= 1;
+                  feed.upvotedBy = feed.upvotedBy.filter((id) => id !== userId);
+                  feed.isUpvoted = false
+                
                 }
-            }
-        } )
-        
-        state.feedback = updatedUpvotes
-        }
+              }
+      
+              return feed;
+            });
+      
+            state.feedback = updatedFeedback;
+        },
+       
     },
     extraReducers(builder) {
         builder

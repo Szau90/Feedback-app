@@ -7,12 +7,16 @@ import { SuggestionHeader } from "@/components/Ui/SuggestionsHeader";
 import { Nofeedback } from "@/components/Nofeedback";
 import { RootState, useAppDispatch } from "@/store/store";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchFeedback } from "@/store/feedbackSlice";
 
 const jost = Jost({ subsets: ["latin"] });
 
 const API_URL = process.env.API_URL || "http://localhost:3000";
 
 const Home = ({ feedback }: InferGetStaticPropsType<typeof getStaticProps>) => {
+
+
   const statusArray = feedback.map((s) => s.status);
   const planned = statusArray.filter((f) => f === "Planned").length;
   const inProgress = statusArray.filter((f) => f === "In-Progress").length;
@@ -61,6 +65,7 @@ const Home = ({ feedback }: InferGetStaticPropsType<typeof getStaticProps>) => {
       description={f.description}
       upvotes={f.upvotes}
       status={f.status}
+      isUpvoted={f.isUpvoted}
     />
   ));
 
@@ -102,6 +107,9 @@ export const getStaticProps: GetStaticProps<{
         status: feedback.status,
         description: feedback.description,
         comments: feedback.comments || null,
+        upvotedBy: feedback.upvotedBy || null,
+        isUpvoted:feedback.isUpvoted,
+  
       })),
     },
     revalidate: 1,
