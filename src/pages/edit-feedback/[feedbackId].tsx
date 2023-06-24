@@ -53,7 +53,7 @@ const EditFeedback = ({
           <div className="flex h-[893px] justify-center rounded-[10px] bg-white pt-10">
             <div className="w-[279px] md:w-[456px]">
               <h3 className="text-h4 text-custom-very-dark-gray md:text-h2">
-                Editing '{title}'
+                Editing &apos;{title}&apos;
               </h3>
               <EditFeedbackForm
                 title={title}

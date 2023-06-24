@@ -24,7 +24,7 @@ const FeedbackList: React.FC<{
 
   useEffect(() => {
     dispatch(fetchFeedback());
-  }, [upvotes]);
+  }, [dispatch, upvotes]);
 
   const feedback = useSelector((state: RootState) => state.feedback.feedback);
 

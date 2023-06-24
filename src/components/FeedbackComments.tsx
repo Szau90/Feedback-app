@@ -16,7 +16,7 @@ const FeedbackComments: React.FC<{ feedbackId: number }> = ({ feedbackId }) => {
 
   useEffect(() => {
     dispatch(fetchComments(feedbackId));
-  }, []);
+  }, [dispatch, feedbackId]);
 
   const status = useSelector((state: RootState) => state.comments.status);
   const comments = useSelector((state: RootState) => state.comments.comments);
