@@ -1,28 +1,22 @@
 import { useState } from "react";
-import MainBtn from "./Ui/buttons/MainBtn";
-import { Comments, Replies } from "@/models/feedback";
-import { useDispatch } from "react-redux";
-import { addComment } from "@/store/commentsSlice";
+import { Comments } from "@/models/feedback";
+import { addComment, sendComments } from "@/store/commentsSlice";
+import CommentInput from "./Ui/inputs/CommentInput";
+import { useAppDispatch } from "@/store/store";
+import CommentActions from "./Ui/inputs/CommentActions";
 
 const AddComment: React.FC<{
   id: number;
 }> = ({ id }) => {
-  const [count, setCount] = useState(250);
   const [enteredComment, setEnteredComment] = useState("");
-  const dispatch = useDispatch();
-
-  const changeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const initalValue = 250;
-    const chars = event.target.value.length;
-    const charsLeft = initalValue - chars;
-    setCount(charsLeft);
-    setEnteredComment(event.target.value);
-  };
+  const [count, setCount] = useState(250);
+  const dispatch = useAppDispatch();
 
   const comment: Comments = {
     id: Math.floor(Math.random() * 10000),
     content: enteredComment,
     user: {
+      id: 998,
       image: "/assets/user-images/image-zena.jpg",
       name: "Zena Kelley",
       username: "velvetround",
@@ -31,28 +25,21 @@ const AddComment: React.FC<{
     showReply: false,
   };
 
-  const sendComment = async (comment: Comments, id: number) => {
-    const res = await fetch(`/api/comments/${id}`, {
-      method: "POST",
-      body: JSON.stringify(comment),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  const handleEnteredComment = (comment: string) => {
+    setEnteredComment(comment);
+  };
 
-    if (res.ok) {
-      const updatedComment = await res.json();
-      return updatedComment;
-    } else {
-      throw new Error("Reply could not be sent.");
-    }
+  const handleCounterChange = (counter: number) => {
+    setCount(counter);
   };
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
-    sendComment(comment, id);
+    dispatch(sendComments({ feedbackId: id, comment: comment }));
     dispatch(addComment(comment));
+    setEnteredComment("");
+    setCount(250);
   };
 
   return (
@@ -62,26 +49,12 @@ const AddComment: React.FC<{
           Add comment
         </h3>
         <form onSubmit={submitHandler}>
-          <textarea
-            maxLength={250}
-            placeholder="Type your comment here"
-            className="h-[80px] w-[279px] resize-none bg-custom-very-light-gray p-3 text-body3 font-normal outline-none md:w-[623px] md:text-body2 xl:w-[759px]"
-            onChange={changeHandler}
-            value={enteredComment}
+          <CommentInput
+            onContentChange={handleEnteredComment}
+            comment={enteredComment}
+            onCounterChange={handleCounterChange}
           />
-          <div className="mt-[16px] flex w-[279px] items-center justify-between md:w-[623px] xl:w-[759px]">
-            <p className="text-body3 font-normal text-custom-gray md:text-body2">
-              {count} character left
-            </p>
-            <div className="w-[119px] md:w-[142px]">
-              <MainBtn
-                label="Post Comment"
-                action={() => {}}
-                background="bg-custom-purple"
-                btnType="submit"
-              />
-            </div>
-          </div>
+          <CommentActions counter={count} />
         </form>
       </div>
     </>

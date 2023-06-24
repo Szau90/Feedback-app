@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export const SuggestionLabel:React.FC<{counter: number}> = ({counter}) => {
+export const SuggestionLabel: React.FC<{ counter: number }> = ({ counter }) => {
   return (
     <>
       <div className="mr-[30px] hidden gap-[16px] md:flex">

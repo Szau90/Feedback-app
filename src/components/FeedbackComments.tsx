@@ -6,10 +6,10 @@ import {
   selectCommentsLength,
   selectRepliesLength,
 } from "../store/commentSelector";
-
 import { useAppDispatch } from "@/store/store";
-import CommentLista from "./CommentList";
+import CommentList from "./CommentList";
 import LoadingSpinner from "./Ui/LoadingSpinner";
+import CommentsLength from "./CommentsLength";
 
 const FeedbackComments: React.FC<{ feedbackId: number }> = ({ feedbackId }) => {
   const dispatch = useAppDispatch();
@@ -23,24 +23,22 @@ const FeedbackComments: React.FC<{ feedbackId: number }> = ({ feedbackId }) => {
   const replyLength = useSelector(selectRepliesLength);
   const commentLength = useSelector(selectCommentsLength);
 
-
-
-
-
   const totalLength = replyLength + commentLength;
-  const hasComment = comments !== undefined && comments.length !== 0
+  
+  const hasComment = Array.isArray(comments) && comments.length > 0;
+
 
   return (
     <>
-    {status === "loading" && <LoadingSpinner />}
-    <ul className="mt-[24px] rounded-[10px] bg-white ">
-      {status === "success" && hasComment && (
-        <h3 className="my-[24px] ml-[24px] text-h3 text-custom-very-dark-gray">
-          {totalLength} Comments
-        </h3>
-      )}
-      {status === "success" && <CommentLista comments={comments} feedbackId={feedbackId} />}
-    </ul>
+      {status === "loading" && <LoadingSpinner />}
+      <div className="mt-[24px] rounded-[10px] bg-white ">
+        {status === "success" && hasComment && (
+          <CommentsLength totalLength={totalLength} /> 
+        )}
+        {status === "success" && (
+          <CommentList comments={comments} feedbackId={feedbackId} />
+        )}
+      </div>
     </>
   );
 };

@@ -2,9 +2,7 @@ import Dropdown from "@/components/Ui/Dropdown";
 import MainBtn from "@/components/Ui/buttons/MainBtn";
 import Feedback, { Comments } from "@/models/feedback";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import useInput from "@/Hooks/use-input";
-import { json } from "stream/consumers";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "@/store/store";
 import { setCategory, setStatus } from "@/store/uiSlice";
@@ -17,7 +15,9 @@ const EditFeedbackForm: React.FC<{
   id:number;
   comments: Comments[];
   upvotes: number;
-}> = ({ title, description, status, category, id, comments,upvotes }) => {
+  upvotedBy: number[];
+  isUpvoted: boolean;
+}> = ({ title, description, status, category, id, comments,upvotes, upvotedBy, isUpvoted }) => {
   const router = useRouter();
   
   
@@ -76,6 +76,8 @@ const EditFeedbackForm: React.FC<{
     title: enteredTitle,
     comments: comments,
     upvotes:upvotes,
+    upvotedBy: upvotedBy,
+    isUpvoted: isUpvoted,
   }
   
 

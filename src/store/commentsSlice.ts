@@ -1,11 +1,14 @@
 import { Comments, Replies } from "@/models/feedback";
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { AppThunk, RootState } from "./store";
 
 export interface CommentsState {
   comments: Comments[];
   status: string;
   error: string | undefined;
+}
+interface SendCommentsPayload {
+  comment: Comments;
+  feedbackId: number;
 }
 
 interface HandleReplyToComment {
@@ -30,7 +33,7 @@ interface sendReply {
 interface SendReplyToReply {
   reply: Replies;
   feedbackId: number;
-  commentId:number;
+  commentId: number;
 }
 
 const initialState: CommentsState = {
@@ -40,12 +43,32 @@ const initialState: CommentsState = {
 };
 export const fetchComments = createAsyncThunk(
   "comments/fetchComments",
-  async (feedbackId: number, thunkApi) => {
+  async (feedbackId: number, thunkAPI) => {
     const response = await fetch(`/api/comments/${feedbackId}`);
     const data = await response.json();
     const comments = data.comments;
 
     return comments;
+  }
+);
+
+export const sendComments = createAsyncThunk(
+  "comments/sendComments",
+  async (payload: SendCommentsPayload, thunkAPI) => {
+    const { comment, feedbackId } = payload;
+    const response = await fetch(`/api/comments/${feedbackId}`, {
+      method: "POST",
+      body: JSON.stringify(comment),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      const newComment = await response.json();
+      return newComment;
+    } else {
+      throw new Error("Comment could not be sent.");
+    }
   }
 );
 
@@ -72,26 +95,26 @@ export const sendReply = createAsyncThunk(
 
 export const sendReplyToReply = createAsyncThunk(
   "comments/sendReplyToReply",
-  async (payload:SendReplyToReply, thunkAPI) => {
-      const {reply, feedbackId, commentId} = payload;
+  async (payload: SendReplyToReply, thunkAPI) => {
+    const { reply, feedbackId, commentId } = payload;
 
-      const res = await fetch(`/api/replies/${feedbackId}/${commentId}`, {
-        method: "POST",
-        body: JSON.stringify(reply),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    const res = await fetch(`/api/replies/${feedbackId}/${commentId}`, {
+      method: "POST",
+      body: JSON.stringify(reply),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-      if (res.ok) {
-        const updatedReply = await res.json();
+    if (res.ok) {
+      const updatedReply = await res.json();
 
-        return updatedReply;
-      }else {
-        throw new Error("Reply could not be sent.");
-      }
+      return updatedReply;
+    } else {
+      throw new Error("Reply could not be sent.");
+    }
   }
-)
+);
 
 const commentsSlice = createSlice({
   name: "comments",
@@ -145,7 +168,6 @@ const commentsSlice = createSlice({
       });
 
       state.comments = updatedComments;
-      
     },
     setReply: (state, action: PayloadAction<SetReplyPayload>) => {
       const { reply, commentId } = action.payload;
@@ -191,36 +213,40 @@ const commentsSlice = createSlice({
 
         state.comments = updatedComments;
       })
-      .addCase(sendReplyToReply.fulfilled, (state, action)=> {
+      .addCase(sendReplyToReply.fulfilled, (state, action) => {
         const { replyId, commentId } = action.payload;
 
-      const updatedComments = state.comments.map((comment) => {
-        if (comment.id === commentId) {
-          const updatedReplies = comment.replies.map((reply) => {
-            if (reply.id === replyId) {
-              return {
-                ...reply,
-                showReply: !reply.showReply,
-              };
-            }
-            return reply;
-          });
+        const updatedComments = state.comments.map((comment) => {
+          if (comment.id === commentId) {
+            const updatedReplies = comment.replies.map((reply) => {
+              if (reply.id === replyId) {
+                return {
+                  ...reply,
+                  showReply: !reply.showReply,
+                };
+              }
+              return reply;
+            });
 
-          return {
-            ...comment,
-            replies: updatedReplies,
-          };
-        }
-        return comment;
+            return {
+              ...comment,
+              replies: updatedReplies,
+            };
+          }
+          return comment;
+        });
+
+        state.comments = updatedComments;
       });
-
-      state.comments = updatedComments;
-      })
-      
   },
 });
 
-export const { setComments, addComment, setReply, handleReplyToComment, handleReplyToReply } =
-  commentsSlice.actions;
+export const {
+  setComments,
+  addComment,
+  setReply,
+  handleReplyToComment,
+  handleReplyToReply,
+} = commentsSlice.actions;
 
 export default commentsSlice.reducer;

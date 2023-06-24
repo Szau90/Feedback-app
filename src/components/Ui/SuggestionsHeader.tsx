@@ -6,32 +6,31 @@ import { useAppDispatch, RootState } from "@/store/store";
 import { setSortBy } from "@/store/uiSlice";
 import { useSelector } from "react-redux";
 
-
- export const SuggestionHeader:React.FC<{counter:number}> = ({counter}) => {
+export const SuggestionHeader: React.FC<{ counter: number }> = ({
+  counter,
+}) => {
   const options = [
     "Most Upvotes",
     "Least Upvotes",
     "Most Comments",
     "Least Comments",
   ];
-  const router = useRouter()
+  const router = useRouter();
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
-  const selectedValue = useSelector((state:RootState) => state.ui.sortBy )
-  const showDropdown = useSelector((state:RootState) => state.ui.showDropdownMenu )
-
-  
-  
+  const selectedValue = useSelector((state: RootState) => state.ui.sortBy);
+  const showDropdown = useSelector(
+    (state: RootState) => state.ui.showDropdownMenu
+  );
 
   const addFeedbackBtnHandler = () => {
-    router.push('/new-feedback')
-  }
+    router.push("/new-feedback");
+  };
 
-
-const handleSortBy = (option: string) => {
-  dispatch(setSortBy(option))
- }
+  const handleSortBy = (option: string) => {
+    dispatch(setSortBy(option));
+  };
   return (
     <>
       <div className="flex h-[56px] w-full items-center justify-between bg-custom-very-dark-blue px-[24px] md:mt-[40px] md:h-[72px] md:w-[689px] md:justify-center md:rounded-[10px] md:pr-[0px] xl:w-[825px] ">
@@ -40,7 +39,7 @@ const handleSortBy = (option: string) => {
           <span className=" w-[40px] text-[11px] font-normal text-custom-light-gray md:w-[50px] md:text-[14px]">
             Sort by:
           </span>
-          <div className="w-fit h-[19px] ">
+          <div className="h-[19px] w-fit ">
             <Dropdown
               options={options}
               color="text-white"
@@ -53,7 +52,6 @@ const handleSortBy = (option: string) => {
               handleValueChange={handleSortBy}
               selectedValue={selectedValue}
               showDropdown={showDropdown}
-             
             />
           </div>
         </div>
@@ -68,4 +66,3 @@ const handleSortBy = (option: string) => {
     </>
   );
 };
-

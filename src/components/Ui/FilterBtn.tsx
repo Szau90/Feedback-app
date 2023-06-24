@@ -1,14 +1,15 @@
 import { useAppDispatch } from "@/store/store";
 import { filterFeedback } from "@/store/feedbackSlice";
 
-
-export const FilterBtn: React.FC<{ label: string; value: string; }> = ({ label, value }) => {
-
-  const dispatch = useAppDispatch()
+export const FilterBtn: React.FC<{ label: string; value: string }> = ({
+  label,
+  value,
+}) => {
+  const dispatch = useAppDispatch();
 
   const clickHandler = () => {
-    dispatch(filterFeedback(value))
-  }
+    dispatch(filterFeedback(value));
+  };
   return (
     <>
       <button

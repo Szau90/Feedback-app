@@ -1,10 +1,11 @@
+import Feedback from "@/models/feedback";
 import Link from "next/link";
+import RoadmapNav from "./RoadmapNav";
 
 export const RoadmapLabel: React.FC<{
-  planned: number;
-  inProgress: number;
-  live: number;
-}> = ({ planned, inProgress, live }) => {
+
+  feedback: Feedback[];
+}> = ({ feedback }) => {
   
   return (
     <>
@@ -21,33 +22,7 @@ export const RoadmapLabel: React.FC<{
           </Link>
         </div>
         <ul className="flex w-[175px] flex-col text-body1">
-          <li className=" flex h-[23px] items-center justify-between">
-            <div className="flex w-[93px] flex-row items-center justify-between">
-              <div className="h-[8px] w-[8px] rounded-full bg-custom-light-orange" />{" "}
-              <p className="w-[75px]">planned</p>
-            </div>{" "}
-            <span className="text-custom-gray text-body1 font-bold">
-              {planned}
-            </span>
-          </li>
-          <li className=" flex h-[23px]  justify-between">
-            <div className="flex w-[93px] flex-row items-center justify-between">
-              <div className="h-[8px] w-[8px] rounded-full bg-custom-purple" />{" "}
-              <p className="w-[75px]">in-progress</p>
-            </div>{" "}
-            <span className="text-custom-gray text-body1 font-bold">
-              {inProgress}
-            </span>
-          </li>
-          <li className=" flex h-[23px]  justify-between">
-            <div className="flex w-[93px] flex-row items-center justify-between">
-              <div className="h-[8px] w-[8px] rounded-full bg-custom-light-blue" />{" "}
-              <p className="w-[75px]">live</p>
-            </div>{" "}
-            <span className="text-custom-gray text-body1 font-bold">
-              {live}
-            </span>
-          </li>
+            <RoadmapNav feedback={feedback} />
         </ul>
       </div>
     </>

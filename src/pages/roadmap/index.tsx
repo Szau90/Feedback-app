@@ -25,6 +25,7 @@ const Roadmap = ({
         description={f.description}
         upvotes={f.upvotes}
         status={f.status}
+        isUpvoted={f.isUpvoted}
       />
     ));
   const statusLive = feedback
@@ -39,6 +40,7 @@ const Roadmap = ({
         description={f.description}
         upvotes={f.upvotes}
         status={f.status}
+        isUpvoted={f.isUpvoted}
       />
     ));
   const statusInProgress = feedback
@@ -53,6 +55,7 @@ const Roadmap = ({
         description={f.description}
         upvotes={f.upvotes}
         status={f.status}
+        isUpvoted={f.isUpvoted}
       />
     ));
 
@@ -107,6 +110,8 @@ export const getStaticProps: GetStaticProps<{
         status: feedback.status,
         description: feedback.description,
         comments: feedback.comments || null,
+        upvotedBy: feedback.upvotedBy || null,
+        isUpvoted:feedback.isUpvoted,
       })),
     },
     revalidate: 1,

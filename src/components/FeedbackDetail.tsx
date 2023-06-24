@@ -1,6 +1,6 @@
 import FeedbackList from "./Feedbacklist";
 import FeedbackComments from "./FeedbackComments";
-import Feedback, { Comments } from "@/models/feedback";
+import { Comments } from "@/models/feedback";
 import AddComment from "./AddComment";
 import MainBtn from "./Ui/buttons/MainBtn";
 import GoBackBtn from "./Ui/buttons/GoBackBtn";

@@ -1,8 +1,6 @@
-import { RootState, useAppDispatch } from "@/store/store";
+import { useAppDispatch } from "@/store/store";
 import Image from "next/image";
-import { useSelector } from "react-redux";
-import { toogleDropdown, setSortBy } from "@/store/uiSlice";
-
+import { toogleDropdown } from "@/store/uiSlice";
 
 const Dropdown: React.FC<{
   placeHolder: string;
@@ -13,10 +11,9 @@ const Dropdown: React.FC<{
   position: string;
   height: string;
   width: string;
-  handleValueChange: (option:string) => void;
+  handleValueChange: (option: string) => void;
   selectedValue: string;
   showDropdown: boolean;
-
 }> = ({
   placeHolder,
   options,
@@ -28,18 +25,9 @@ const Dropdown: React.FC<{
   width,
   handleValueChange,
   selectedValue,
-  showDropdown
-  
+  showDropdown,
 }) => {
-
-
-
- 
- 
- const dispatch = useAppDispatch()
-
-
-
+  const dispatch = useAppDispatch();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -53,14 +41,13 @@ const Dropdown: React.FC<{
     return placeHolder;
   };
 
- 
   const isSelected = (options: string) => {
     if (!selectedValue) {
       return false;
     }
     return selectedValue === options;
   };
-console.log(selectedValue)
+
   return (
     <div className="dropdown-container relative h-full w-full text-left">
       <div
@@ -68,13 +55,13 @@ console.log(selectedValue)
         className={`dropdown-input  flex h-full w-full select-none items-center justify-between ${padding} ${background}`}
       >
         <div className={`dropdown-selected-value cursor-pointer ${color}`}>
-          <span className="text-[11px] capitalize font-bold md:text-[14px]">
+          <span className="text-[11px] font-bold capitalize md:text-[14px]">
             {getDisplay()}
           </span>
         </div>
         {showDropdown && (
           <div
-            className={`dropdown-menu absolute ${position} ${height} ${width} translate-y-1 z-50 overflow-auto rounded-[10px] bg-white shadow-lg `}
+            className={`dropdown-menu absolute ${position} ${height} ${width} z-50 translate-y-1 overflow-auto rounded-[10px] bg-white shadow-lg `}
           >
             {options.map((option) => (
               <div

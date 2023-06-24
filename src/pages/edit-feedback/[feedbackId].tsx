@@ -22,7 +22,7 @@ const EditFeedback = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
 
-  const { title, description, status, category, id, comments, upvotes } = feedback;
+  const { title, description, status, category, id, comments, upvotes, upvotedBy, isUpvoted } = feedback;
 
   const goBack = () => {
     router.push(`/${router.query.feedbackId}`);
@@ -63,6 +63,8 @@ const EditFeedback = ({
                 id={id}
                 comments={comments}
                 upvotes={upvotes}
+                upvotedBy={upvotedBy}
+                isUpvoted={isUpvoted}
               />
             </div>
           </div>

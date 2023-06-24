@@ -7,8 +7,7 @@ import { SuggestionHeader } from "@/components/Ui/SuggestionsHeader";
 import { Nofeedback } from "@/components/Nofeedback";
 import { RootState, useAppDispatch } from "@/store/store";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
-import { fetchFeedback } from "@/store/feedbackSlice";
+
 
 const jost = Jost({ subsets: ["latin"] });
 
@@ -74,7 +73,7 @@ const Home = ({ feedback }: InferGetStaticPropsType<typeof getStaticProps>) => {
       className={`flex min-h-screen flex-col items-center justify-start bg-custom-very-light-gray  ${jost.className}`}
     >
       <div className="flex h-fit w-screen flex-col justify-center gap-x-[30px] md:h-auto md:items-center xl:flex xl:flex-row xl:items-start">
-        <Navigation planned={planned} inProgress={inProgress} live={live} />
+        <Navigation planned={planned} inProgress={inProgress} live={live}  feedback={feedback} />
 
         <div className="flex flex-col items-center md:items-start">
           <SuggestionHeader counter={filteredFeedback.length} />
