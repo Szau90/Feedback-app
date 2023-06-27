@@ -15,11 +15,10 @@ export default async function handler(
   const method = req.method;
 
   switch (method) {
-    
     case "GET":
       try {
         const client = await MongoClient.connect(
-          "mongodb+srv://Szau:FordMondeo12@cluster0.jfdopa9.mongodb.net/Product-feedback-app?retryWrites=true&w=majority"
+          process.env.NEXT_PUBLIC_MONGODB_URI!
         );
 
         const db = client.db();
@@ -29,11 +28,8 @@ export default async function handler(
 
           const result = await db
             .collection("product-requests")
-            .findOne({id: parsedFeedbackId} )
-            
+            .findOne({ id: parsedFeedbackId });
 
-      
-          
           client.close();
 
           res.status(201).json(JSON.parse(JSON.stringify(result)));
@@ -46,7 +42,7 @@ export default async function handler(
     case "POST":
       try {
         const client = await MongoClient.connect(
-          "mongodb+srv://Szau:FordMondeo12@cluster0.jfdopa9.mongodb.net/Product-feedback-app?retryWrites=true&w=majority"
+          process.env.NEXT_PUBLIC_MONGODB_URI!
         );
 
         const db = client.db();
@@ -60,10 +56,7 @@ export default async function handler(
               $addToSet: { comments: data },
             } as any);
 
-      
-
           client.close();
-
 
           res.status(201).json(JSON.parse(JSON.stringify(data)));
         }

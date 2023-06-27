@@ -16,7 +16,7 @@ const initialState: UiState = {
   showMobileMenu: false,
   sortBy: "Most Upvotes",
   category: "Feature",
-  status: "Suggestion",
+  status: "suggestion",
   commentInputLength: 250,
 };
 

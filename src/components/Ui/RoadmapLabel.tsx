@@ -3,10 +3,8 @@ import Link from "next/link";
 import RoadmapNav from "./RoadmapNav";
 
 export const RoadmapLabel: React.FC<{
-
   feedback: Feedback[];
 }> = ({ feedback }) => {
-  
   return (
     <>
       <div className="flex h-[178px] w-[223px] flex-col items-center justify-center rounded-[10px] bg-white xl:w-[255px] ">
@@ -22,7 +20,7 @@ export const RoadmapLabel: React.FC<{
           </Link>
         </div>
         <ul className="flex w-[175px] flex-col text-body1">
-            <RoadmapNav feedback={feedback} />
+          <RoadmapNav feedback={feedback} />
         </ul>
       </div>
     </>

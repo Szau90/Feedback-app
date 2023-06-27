@@ -52,27 +52,23 @@ const ReplyForm: React.FC<{
   };
 
   return (
-  
-      <form
-        onSubmit={(event) =>
-          submitHandler(event, commentId, userName, comments)
-        }
-        className="mb-6 ml-[72px]  flex  flex-row gap-[16px]"
-      >
-        <ReplyInput
-          onReplyChange={replyChangeHandler}
-          enteredReply={enteredReply}
+    <form
+      onSubmit={(event) => submitHandler(event, commentId, userName, comments)}
+      className="mb-6 ml-[72px]  flex  flex-row gap-[16px]"
+    >
+      <ReplyInput
+        onReplyChange={replyChangeHandler}
+        enteredReply={enteredReply}
+      />
+      <div className="w-[117px]">
+        <MainBtn
+          btnType="submit"
+          background="bg-custom-purple"
+          action={() => {}}
+          label="Post Reply"
         />
-        <div className="w-[117px]">
-          <MainBtn
-            btnType="submit"
-            background="bg-custom-purple"
-            action={() => {}}
-            label="Post Reply"
-          />
-        </div>
-      </form>
- 
+      </div>
+    </form>
   );
 };
 

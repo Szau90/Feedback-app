@@ -20,6 +20,7 @@ const CommentList: React.FC<{
   const clickReplyHandler = (commentId: number) => {
     dispatch(handleReplyToComment({ comments, commentId }));
   };
+  
 
   return (
     <ul>
@@ -29,10 +30,7 @@ const CommentList: React.FC<{
           className="flex w-[327px] flex-col items-center md:w-[689px] xl:w-[825px]"
         >
           <div className="block w-[280px]  items-center  md:w-[625px] xl:w-[761px]">
-            <CommentListWrapper
-              index={index}
-              showReply={comment.showReply}
-            >
+            <CommentListWrapper index={index} showReply={comment.showReply}>
               <div className="mb-[16px] flex justify-center  ">
                 <Image
                   src={comment.user.image}
@@ -61,7 +59,7 @@ const CommentList: React.FC<{
                 />
               )}
             </CommentListWrapper>
-            <ReplyList
+           { <ReplyList
               key={index}
               replies={comment.replies}
               commentIndex={index}
@@ -69,6 +67,7 @@ const CommentList: React.FC<{
               feedbackId={feedbackId}
               actualCommentId={comment.id}
             />
+           }
           </div>
         </li>
       ))}

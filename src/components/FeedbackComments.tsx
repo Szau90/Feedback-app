@@ -24,16 +24,15 @@ const FeedbackComments: React.FC<{ feedbackId: number }> = ({ feedbackId }) => {
   const commentLength = useSelector(selectCommentsLength);
 
   const totalLength = replyLength + commentLength;
-  
-  const hasComment = Array.isArray(comments) && comments.length > 0;
 
+  const hasComment = Array.isArray(comments) && comments.length > 0;
 
   return (
     <>
       {status === "loading" && <LoadingSpinner />}
       <div className="mt-[24px] rounded-[10px] bg-white ">
         {status === "success" && hasComment && (
-          <CommentsLength totalLength={totalLength} /> 
+          <CommentsLength totalLength={totalLength} />
         )}
         {status === "success" && (
           <CommentList comments={comments} feedbackId={feedbackId} />

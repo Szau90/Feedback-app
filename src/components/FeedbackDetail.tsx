@@ -15,21 +15,32 @@ export const FeedbackDetail: React.FC<{
   upvotes: number;
   status: string;
   isUpvoted: boolean;
-}> = ({ id, title, comments, category, description, upvotes, status, isUpvoted }) => {
-
-  const router = useRouter()
+}> = ({
+  id,
+  title,
+  comments,
+  category,
+  description,
+  upvotes,
+  status,
+  isUpvoted,
+}) => {
+  const router = useRouter();
   const editBtnHandler = () => {
-    router.push(`/edit-feedback/${router.query.feedbackId}`)
-  }
+    router.push(`/edit-feedback/${router.query.feedbackId}`);
+  };
   const goBackHandler = () => {
-    router.push('/')
-  }
+    router.push("/");
+  };
 
-  
   return (
     <>
-      <div className="w-[327px] flex justify-between mt-[24px] md:w-[689px] md:mt-[56px] xl:w-[825px]">
-        <GoBackBtn label={"Go Back"} text="text-custom-gray" action={goBackHandler} />
+      <div className="mt-[24px] flex w-[327px] justify-between md:mt-[56px] md:w-[689px] xl:w-[825px]">
+        <GoBackBtn
+          label={"Go Back"}
+          text="text-custom-gray"
+          action={goBackHandler}
+        />
         <div className="w-[119px] md:w-[142px]">
           <MainBtn
             label="Edit Feedback"
@@ -49,10 +60,9 @@ export const FeedbackDetail: React.FC<{
         status={status}
         isUpvoted={isUpvoted}
       />
-   
+
       <FeedbackComments feedbackId={id} />
-      <AddComment id={id}/>
-        
+      <AddComment id={id} />
     </>
   );
 };

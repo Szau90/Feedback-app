@@ -1,6 +1,4 @@
-import { useAppDispatch } from "@/store/store";
 import Image from "next/image";
-import { toogleDropdown } from "@/store/uiSlice";
 
 const Dropdown: React.FC<{
   placeHolder: string;
@@ -14,6 +12,7 @@ const Dropdown: React.FC<{
   handleValueChange: (option: string) => void;
   selectedValue: string;
   showDropdown: boolean;
+  onDropdownClick: (event: React.MouseEvent<HTMLElement>) => void;
 }> = ({
   placeHolder,
   options,
@@ -26,14 +25,8 @@ const Dropdown: React.FC<{
   handleValueChange,
   selectedValue,
   showDropdown,
+  onDropdownClick,
 }) => {
-  const dispatch = useAppDispatch();
-
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
-    dispatch(toogleDropdown());
-  };
-
   const getDisplay = () => {
     if (selectedValue) {
       return selectedValue;
@@ -51,7 +44,7 @@ const Dropdown: React.FC<{
   return (
     <div className="dropdown-container relative h-full w-full text-left">
       <div
-        onClick={handleClick}
+        onClick={onDropdownClick}
         className={`dropdown-input  flex h-full w-full select-none items-center justify-between ${padding} ${background}`}
       >
         <div className={`dropdown-selected-value cursor-pointer ${color}`}>

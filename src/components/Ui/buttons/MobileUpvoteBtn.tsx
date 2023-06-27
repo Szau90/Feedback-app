@@ -8,7 +8,7 @@ const MobileUpvoteBtn: React.FC<{
   isUpvoted: boolean;
   feedbackId: number;
   upvote: number;
-  hide:string;
+  hide: string;
 }> = ({ isUpvoted, feedbackId, upvote, hide }) => {
   const dispatch = useAppDispatch();
 

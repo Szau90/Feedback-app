@@ -15,11 +15,17 @@ const ReplyList: React.FC<{
   feedbackId: number;
   actualCommentId: number;
 }> = ({ replies, commentIndex, comments, feedbackId, actualCommentId }) => {
+  
+const hasReply = Array.isArray(replies) && replies.length > 0;
   return (
     <>
       <div className="relative mt-[24px] !border-none  md:flex md:flex-col md:items-end">
-        {replies.map((reply, index) => (
-          <ReplyListWrapper key={index + 100} index={index} commentIndex={commentIndex}>
+        {hasReply && replies.map((reply, index) => (
+          <ReplyListWrapper
+            key={index + 100}
+            index={index}
+            commentIndex={commentIndex}
+          >
             <div className="mb-[16px] flex ">
               <Image
                 src={reply.user.image}

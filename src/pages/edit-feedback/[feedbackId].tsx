@@ -1,7 +1,3 @@
-import GoBackBtn from "@/components/Ui/buttons/GoBackBtn";
-import { Jost } from "next/font/google";
-import Image from "next/image";
-import Feedback from "@/models/feedback";
 import { MongoClient } from "mongodb";
 import {
   GetStaticPaths,
@@ -11,18 +7,32 @@ import {
   GetStaticPropsResult,
 } from "next";
 import { useRouter } from "next/router";
+import { Jost } from "next/font/google";
+
+import GoBackBtn from "@/components/Ui/buttons/GoBackBtn";
+import Image from "next/image";
+import Feedback from "@/models/feedback";
 import EditFeedbackForm from "@/components/Forms/EditFeedbackForm";
+import Head from "next/head";
 
 const jost = Jost({ subsets: ["latin"] });
-
-const API_URL = process.env.API_URL || "http://localhost:3000";
 
 const EditFeedback = ({
   feedback,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
 
-  const { title, description, status, category, id, comments, upvotes, upvotedBy, isUpvoted } = feedback;
+  const {
+    title,
+    description,
+    status,
+    category,
+    id,
+    comments,
+    upvotes,
+    upvotedBy,
+    isUpvoted,
+  } = feedback;
 
   const goBack = () => {
     router.push(`/${router.query.feedbackId}`);
@@ -30,16 +40,18 @@ const EditFeedback = ({
 
   return (
     <>
+    <Head>
+        <title>Edit {title}</title>
+        <meta name="description" content=" edit Feedback" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <main
         className={`flex min-h-screen flex-col items-center justify-start bg-custom-very-light-gray  ${jost.className}`}
       >
         {" "}
         <div className="mt-[34px] w-[327px] md:w-[540px]">
-          <GoBackBtn
-            action={goBack}
-            text="text-custom-gray"
-            label="Go Back"
-          />
+          <GoBackBtn action={goBack} text="text-custom-gray" label="Go Back" />
         </div>
         <div className="relative mb-[60px]  mt-[60px] h-[893px] w-[327px] md:w-[540px]">
           <Image
@@ -76,13 +88,13 @@ const EditFeedback = ({
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const client = await MongoClient.connect(
-    "mongodb+srv://Szau:FordMondeo12@cluster0.jfdopa9.mongodb.net/Product-feedback-app?retryWrites=true&w=majority"
+    process.env.NEXT_PUBLIC_MONGODB_URI!
   );
   const db = client.db();
 
   const collection = db.collection("product-requests");
 
-  const result = await collection.find<Feedback>({}).toArray(); 
+  const result = await collection.find<Feedback>({}).toArray();
 
   const paths = result.map((i) => ({
     params: { feedbackId: i.id.toString() },
@@ -91,29 +103,48 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return { paths, fallback: "blocking" };
 };
 
-export const getStaticProps: GetStaticProps<{
-  feedback: Feedback;
-}> = async (
+export const getStaticProps: GetStaticProps<{ feedback: Feedback }> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<{ feedback: Feedback }>> => {
   if (typeof context.params !== "undefined") {
-    const id = context.params.feedbackId;
+    const feedbackId = context.params.feedbackId;
+    if (typeof feedbackId === "string") {
+      const parsedFeedbackId = parseInt(feedbackId);
+      if (!isNaN(parsedFeedbackId)) {
+        const client = await MongoClient.connect(
+          process.env.NEXT_PUBLIC_MONGODB_URI!
+        );
+        const db = client.db();
+        const feedback = await db
+          .collection("product-requests")
+          .findOne({ id: parsedFeedbackId });
 
-    const res = await fetch(`${API_URL}/api/${id}`);
+        client.close();
 
-    const feedback: Feedback = await res.json();
-
-    return {
-      props: {
-        feedback,
-      },
-      revalidate: 1,
-    };
+        if (feedback) {
+          return {
+            props: {
+              feedback: {
+                id: feedback.id,
+                title: feedback.title,
+                category: feedback.category,
+                upvotes: feedback.upvotes,
+                status: feedback.status,
+                description: feedback.description,
+                comments: feedback.comments || null,
+                upvotedBy: feedback.upvotedBy || null,
+                isUpvoted: feedback.isUpvoted,
+              },
+            },
+            revalidate: 1,
+          };
+        }
+      }
+    }
   }
+
   return {
-    props: {
-      feedback: {} as Feedback,
-    },
+    notFound: true,
   };
 };
 

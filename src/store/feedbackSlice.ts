@@ -18,16 +18,25 @@ interface handleUpvotePayload {
   user: User;
 }
 
+interface EditFeedbackPayload {
+  updatedFeedbackData: Feedback;
+  id: number;
+}
+
 export const fetchFeedback = createAsyncThunk(
   "feedback/fetchfeedback",
   async (thunkAPI) => {
-    const res = await fetch("/api/feedback");
+    try {
+      const res = await fetch("/api/feedback");
 
-    if (res.ok) {
-      const feedback = res.json();
-      return feedback;
-    } else {
-      throw new Error("Cannot find any feedback");
+      if (res.ok) {
+        const feedback = res.json();
+        return feedback;
+      } else {
+        throw new Error("Cannot find any feedback");
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 );
@@ -35,19 +44,65 @@ export const fetchFeedback = createAsyncThunk(
 export const addFeedback = createAsyncThunk(
   "feedback/addfeedback",
   async (payload: Feedback) => {
-    const res = await fetch("/api/feedback", {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      const res = await fetch("/api/feedback", {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    if (res.ok) {
-      const newFeedback = await res.json();
-      return newFeedback;
-    } else {
-      throw new Error("Feedback could not be sent.");
+      if (res.ok) {
+        const newFeedback = await res.json();
+        return newFeedback;
+      } else {
+        throw new Error("Feedback could not be sent.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const editFeedback = createAsyncThunk(
+  "feedback/editFeedback",
+  async (payload: EditFeedbackPayload) => {
+    try {
+      const { updatedFeedbackData, id } = payload;
+      const res = await fetch(`/api/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(updatedFeedbackData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (res.ok) {
+        await res.json();
+      } else {
+        throw new Error("could not be update feedback.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const deleteFeedback = createAsyncThunk(
+  "feedback/deleteFeedback",
+  async (id: number) => {
+    try {
+      const res = await fetch(`/api/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message);
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 );

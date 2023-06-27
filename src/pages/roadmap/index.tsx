@@ -1,14 +1,13 @@
-import RoadmapItem from "@/components/RoadmapItem";
-
-import Feedback from "@/models/feedback";
+import { MongoClient } from "mongodb";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import React from "react";
-
 import { Jost } from "next/font/google";
+import RoadmapItem from "@/components/RoadmapItem";
+import Feedback from "@/models/feedback";
 import RoadmapList from "@/components/RoadmapList";
+import Head from "next/head";
 
 const jost = Jost({ subsets: ["latin"] });
-const API_URL = process.env.API_URL || "http://localhost:3000";
 
 const Roadmap = ({
   feedback,
@@ -59,36 +58,40 @@ const Roadmap = ({
       />
     ));
 
-    type StatusData = {
-      [key: string]: {
-        status: JSX.Element[];
-        description: string;
-      };
+  type StatusData = {
+    [key: string]: {
+      status: JSX.Element[];
+      description: string;
     };
+  };
 
-  const statusData:StatusData = {
+  const statusData: StatusData = {
     live: {
       status: statusLive,
       description: "Released Features",
     },
     inProgress: {
       status: statusInProgress,
-      description: "Currently beeing developed"
+      description: "Currently beeing developed",
     },
     planned: {
       status: statusPlanned,
-      description: "Ideas prioritized for research"
+      description: "Ideas prioritized for research",
     },
   };
 
-  
-
   return (
     <>
+    <Head>
+        <title>Roadmap</title>
+        <meta name="description" content=" create Feedback" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <main
         className={`flex min-h-screen flex-col items-center justify-start bg-custom-very-light-gray  ${jost.className}`}
       >
-       <RoadmapList statusData={statusData} />
+        <RoadmapList statusData={statusData} />
       </main>
     </>
   );
@@ -97,12 +100,18 @@ const Roadmap = ({
 export const getStaticProps: GetStaticProps<{
   feedback: Feedback[];
 }> = async () => {
-  const res = await fetch(`${API_URL}/api/feedback`);
-  const feedback: Feedback[] = await res.json();
+  const client = await MongoClient.connect(
+    process.env.NEXT_PUBLIC_MONGODB_URI!
+  );
+  const db = client.db();
+
+  const feedback = await db.collection("product-requests").find({}).toArray();
+
+  client.close();
 
   return {
     props: {
-      feedback: feedback.map((feedback: Feedback) => ({
+      feedback: feedback.map((feedback) => ({
         id: feedback.id,
         title: feedback.title,
         category: feedback.category,
@@ -111,7 +120,7 @@ export const getStaticProps: GetStaticProps<{
         description: feedback.description,
         comments: feedback.comments || null,
         upvotedBy: feedback.upvotedBy || null,
-        isUpvoted:feedback.isUpvoted,
+        isUpvoted: feedback.isUpvoted,
       })),
     },
     revalidate: 1,

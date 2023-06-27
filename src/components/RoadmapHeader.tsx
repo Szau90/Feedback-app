@@ -8,6 +8,10 @@ const RoadmapHeader = () => {
   const clickHandler = () => {
     router.back();
   };
+
+  const handleAddFeedbackClick = () => {
+    router.push("/new-feedback");
+  };
   return (
     <>
       <div className="flex h-[100px] w-full flex-row items-center justify-between bg-custom-very-dark-gray px-[24px] md:mt-[56px] md:w-[689px] md:rounded-[10px] xl:w-[1110px]">
@@ -18,7 +22,7 @@ const RoadmapHeader = () => {
         <div className="w-[134px]">
           <MainBtn
             label="+ Add Feedback"
-            action={() => {}}
+            action={handleAddFeedbackClick}
             background="bg-custom-purple"
           />
         </div>

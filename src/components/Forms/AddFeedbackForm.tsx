@@ -1,13 +1,13 @@
-import MainBtn from "@/components/Ui/buttons/MainBtn";
 import { useRouter } from "next/router";
-import useInput from "@/Hooks/use-input";
-import { RootState, useAppDispatch } from "@/store/store";
 import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "@/store/store";
 import { addFeedback } from "@/store/feedbackSlice";
 import FormTitle from "../FormComponents/FormTitle";
 import FeedbackTitleInput from "../FormComponents/FeedbackTitleInput";
 import FeedbackCategoryInput from "../FormComponents/FeedbackCategoryInput";
 import FeedbackDetailInput from "../FormComponents/FeedbackDetailInput";
+import useInput from "@/Hooks/use-input";
+import AddFormActions from "../FormComponents/AddFormActions";
 
 const AddFeedbackForm = () => {
   const dispatch = useAppDispatch();
@@ -23,7 +23,7 @@ const AddFeedbackForm = () => {
     valueChangeHandler: titleChangeHandler,
     inputBlurHandler: titleBlurHandler,
     reset: resetTitle,
-  } = useInput((value) => value.trim() !== "");
+  } = useInput((value) => value.trim() !== "", "");
   const {
     value: enteredDescription,
     isValid: enteredDescriptionIsValid,
@@ -31,7 +31,7 @@ const AddFeedbackForm = () => {
     valueChangeHandler: descriptionChangeHandler,
     inputBlurHandler: descriptionBlurHandler,
     reset: resetDescription,
-  } = useInput((value) => value.trim() !== "");
+  } = useInput((value) => value.trim() !== "", "");
 
   const formData = {
     id: Math.floor(Math.random() * 10000),
@@ -54,8 +54,8 @@ const AddFeedbackForm = () => {
 
       router.push("/");
 
-      resetTitle()
-      resetDescription()
+      resetTitle();
+      resetDescription();
     } else {
       return;
     }
@@ -72,30 +72,17 @@ const AddFeedbackForm = () => {
               titleBlurHandler={titleBlurHandler}
               titleHasError={titleHasError}
             />
-            <FeedbackCategoryInput />
+            <FeedbackCategoryInput currentCategory={"Feature"} />
             <FeedbackDetailInput
               enteredDescription={enteredDescription}
               descriptionChangeHandler={descriptionChangeHandler}
               descriptionBlurHandler={descriptionBlurHandler}
               descriptionHasError={descriptionHasError}
             />
-            <div className="flex flex-col gap-[16px] md:flex-row-reverse">
-              <div className="md:h-[44px] md:w-[144px]">
-                <MainBtn
-                  action={() => {}}
-                  btnType="submit"
-                  label="Add Feedback"
-                  background="bg-custom-purple"
-                />
-              </div>
-              <div className="md:h-[44px] md:w-[93px]">
-                <MainBtn
-                  action={() => {}}
-                  label="Cancel"
-                  background="bg-custom-very-dark-gray"
-                />
-              </div>
-            </div>
+            <AddFormActions
+              resetTitle={resetTitle}
+              resetDescription={resetDescription}
+            />
           </div>
         </div>
       </form>

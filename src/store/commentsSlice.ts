@@ -44,30 +44,38 @@ const initialState: CommentsState = {
 export const fetchComments = createAsyncThunk(
   "comments/fetchComments",
   async (feedbackId: number, thunkAPI) => {
-    const response = await fetch(`/api/comments/${feedbackId}`);
-    const data = await response.json();
-    const comments = data.comments;
+    try {
+      const response = await fetch(`/api/comments/${feedbackId}`);
+      const data = await response.json();
+      const comments = data.comments;
 
-    return comments;
+      return comments;
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 
 export const sendComments = createAsyncThunk(
   "comments/sendComments",
   async (payload: SendCommentsPayload, thunkAPI) => {
-    const { comment, feedbackId } = payload;
-    const response = await fetch(`/api/comments/${feedbackId}`, {
-      method: "POST",
-      body: JSON.stringify(comment),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (response.ok) {
-      const newComment = await response.json();
-      return newComment;
-    } else {
-      throw new Error("Comment could not be sent.");
+    try {
+      const { comment, feedbackId } = payload;
+      const response = await fetch(`/api/comments/${feedbackId}`, {
+        method: "POST",
+        body: JSON.stringify(comment),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const newComment = await response.json();
+        return newComment;
+      } else {
+        throw new Error("Comment could not be sent.");
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 );
@@ -75,20 +83,24 @@ export const sendComments = createAsyncThunk(
 export const sendReply = createAsyncThunk(
   "comments/sendReplies",
   async (payload: sendReply, thunkAPI) => {
-    const { reply, feedbackId, commentId } = payload;
-    const res = await fetch(`/api/replies/${feedbackId}/${commentId}`, {
-      method: "POST",
-      body: JSON.stringify(reply),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      const { reply, feedbackId, commentId } = payload;
+      const res = await fetch(`/api/replies/${feedbackId}/${commentId}`, {
+        method: "POST",
+        body: JSON.stringify(reply),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    if (res.ok) {
-      const updatedReply = await res.json();
-      return updatedReply;
-    } else {
-      throw new Error("Reply could not be sent.");
+      if (res.ok) {
+        const updatedReply = await res.json();
+        return updatedReply;
+      } else {
+        throw new Error("Reply could not be sent.");
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 );
@@ -96,22 +108,26 @@ export const sendReply = createAsyncThunk(
 export const sendReplyToReply = createAsyncThunk(
   "comments/sendReplyToReply",
   async (payload: SendReplyToReply, thunkAPI) => {
-    const { reply, feedbackId, commentId } = payload;
+    try {
+      const { reply, feedbackId, commentId } = payload;
 
-    const res = await fetch(`/api/replies/${feedbackId}/${commentId}`, {
-      method: "POST",
-      body: JSON.stringify(reply),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+      const res = await fetch(`/api/replies/${feedbackId}/${commentId}`, {
+        method: "POST",
+        body: JSON.stringify(reply),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    if (res.ok) {
-      const updatedReply = await res.json();
+      if (res.ok) {
+        const updatedReply = await res.json();
 
-      return updatedReply;
-    } else {
-      throw new Error("Reply could not be sent.");
+        return updatedReply;
+      } else {
+        throw new Error("Reply could not be sent.");
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 );

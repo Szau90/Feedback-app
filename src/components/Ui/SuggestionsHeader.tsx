@@ -5,6 +5,7 @@ import MainBtn from "./buttons/MainBtn";
 import { useAppDispatch, RootState } from "@/store/store";
 import { setSortBy } from "@/store/uiSlice";
 import { useSelector } from "react-redux";
+import { toogleDropdown } from "@/store/uiSlice";
 
 export const SuggestionHeader: React.FC<{ counter: number }> = ({
   counter,
@@ -18,6 +19,11 @@ export const SuggestionHeader: React.FC<{ counter: number }> = ({
   const router = useRouter();
 
   const dispatch = useAppDispatch();
+
+  const handleDropdownClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    dispatch(toogleDropdown());
+  };
 
   const selectedValue = useSelector((state: RootState) => state.ui.sortBy);
   const showDropdown = useSelector(
@@ -52,6 +58,7 @@ export const SuggestionHeader: React.FC<{ counter: number }> = ({
               handleValueChange={handleSortBy}
               selectedValue={selectedValue}
               showDropdown={showDropdown}
+              onDropdownClick={handleDropdownClick}
             />
           </div>
         </div>

@@ -16,7 +16,7 @@ export default async function handler(
     case "POST":
       try {
         const client = await MongoClient.connect(
-          "mongodb+srv://Szau:FordMondeo12@cluster0.jfdopa9.mongodb.net/Product-feedback-app?retryWrites=true&w=majority"
+          process.env.NEXT_PUBLIC_MONGODB_URI!
         );
 
         const db = client.db();
@@ -25,13 +25,15 @@ export default async function handler(
           const parsedFeedbackId = parseInt(feedbackId);
           const parsedCommentId = parseInt(commentId);
 
-          const result = await db.collection("product-requests").findOneAndUpdate(
-            {
-              id: parsedFeedbackId,
-              "comments.id": parsedCommentId, // Az adott komment azonosítójának szűrése
-            },
-            { $push: { "comments.$.replies": reply } } as any // A $ helyettesíti a megfelelően szűrt kommentet
-          );
+          const result = await db
+            .collection("product-requests")
+            .findOneAndUpdate(
+              {
+                id: parsedFeedbackId,
+                "comments.id": parsedCommentId,
+              },
+              { $push: { "comments.$.replies": reply } } as any
+            );
 
           client.close();
           console.log(result);
@@ -49,4 +51,3 @@ export default async function handler(
       break;
   }
 }
-

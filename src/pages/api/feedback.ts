@@ -7,12 +7,12 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const method = req.method;
-  const data:Feedback = req.body;
+  const data: Feedback = req.body;
   switch (method) {
     case "GET":
       try {
         const client = await MongoClient.connect(
-          "mongodb+srv://Szau:FordMondeo12@cluster0.jfdopa9.mongodb.net/Product-feedback-app?retryWrites=true&w=majority"
+          process.env.NEXT_PUBLIC_MONGODB_URI!
         );
         const db = client.db();
 
@@ -21,7 +21,7 @@ export default async function handler(
           .find({})
           .toArray();
 
-          client.close();
+        client.close();
 
         res.status(200).json(JSON.parse(JSON.stringify(feedback)));
       } catch (e) {
@@ -33,14 +33,12 @@ export default async function handler(
     case "POST":
       try {
         const client = await MongoClient.connect(
-          "mongodb+srv://Szau:FordMondeo12@cluster0.jfdopa9.mongodb.net/Product-feedback-app?retryWrites=true&w=majority"
+          process.env.NEXT_PUBLIC_MONGODB_URI!
         );
 
         const db = client.db();
 
-        const result = await db
-          .collection("product-requests")
-          .insertOne( data );
+        const result = await db.collection("product-requests").insertOne(data);
 
         console.log(result);
 

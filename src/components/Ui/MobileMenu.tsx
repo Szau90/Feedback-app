@@ -3,8 +3,7 @@ import CategoryList from "./CategoryList";
 import Feedback from "@/models/feedback";
 
 export const MobileMenu: React.FC<{
-
-  feedback: Feedback[]
+  feedback: Feedback[];
 }> = ({ feedback }) => {
   return (
     <>

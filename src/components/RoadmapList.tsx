@@ -19,7 +19,7 @@ export type StatusColors = {
 const RoadmapList: React.FC<{
   statusData: StatusData;
 }> = ({ statusData }) => {
-  const [activeIndex, setActiveIndex] = useState(1); // Az in-progress tömb az alapértelmezett aktív tömb
+  const [activeIndex, setActiveIndex] = useState(1); // the in-progress array is initial array
 
   const handleTabClick = (index: number) => {
     setActiveIndex(index);

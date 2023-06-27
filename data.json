@@ -10,7 +10,7 @@
       "title": "Add tags for solutions",
       "category": "enhancement",
       "upvotes": 112,
-      "status": "suggestion",
+      "status": "Suggestion",
       "description": "Easier to search for solutions based on a specific stack.",
       "comments": [
         {
@@ -33,14 +33,16 @@
           },
           "replies":[]
         }
-      ]
+      ],
+      "upvotedBy": [],
+      "isUpvoted": false
     },
     {
       "id": 2,
       "title": "Add a dark theme option",
       "category": "feature",
       "upvotes": 99,
-      "status": "suggestion",
+      "status": "Suggestion",
       "description": "It would help people with light sensitivities and who prefer dark mode.",
       "comments": [
         {
@@ -84,14 +86,16 @@
             }
           ]
         }
-      ]
+      ],
+      "upvotedBy": [],
+      "isUpvoted": false
     },
     {
       "id": 3,
       "title": "Q&A within the challenge hubs",
       "category": "feature",
       "upvotes": 65,
-      "status": "suggestion",
+      "status": "Suggestion",
       "description": "Challenge-specific Q&A would make for easy reference.",
       "comments": [
         {
@@ -104,14 +108,16 @@
           },
           "replies":[]
         }
-      ]
+      ],
+      "upvotedBy": [],
+      "isUpvoted": false
     },
     {
       "id": 4,
       "title": "Add image/video upload to feedback",
       "category": "enhancement",
       "upvotes": 51,
-      "status": "suggestion",
+      "status": "Suggestion",
       "description": "Images and screencasts can enhance comments on solutions.",
       "comments": [
         { 
@@ -134,14 +140,16 @@
           },
           "replies":[]
         }
-      ]
+      ],
+      "upvotedBy": [],
+      "isUpvoted": false
     },
     {
       "id": 5,
       "title": "Ability to follow others",
       "category": "feature",
       "upvotes": 42,
-      "status": "suggestion",
+      "status": "Suggestion",
       "description": "Stay updated on comments and solutions other people post.",
       "comments": [
         {
@@ -175,16 +183,20 @@
           },
           "replies":[]
         }
-      ]
+      ],
+      "upvotedBy": [],
+      "isUpvoted": false
     },
     {
       "id": 6,
       "title": "Preview images not loading",
       "category": "bug",
       "upvotes": 3,
-      "status": "suggestion",
+      "status": "Suggestion",
       "description": "Challenge preview images are missing when you apply a filter.",
-      "comments":[]
+      "comments":[],
+      "upvotedBy": [],
+      "isUpvoted": false
     },
     {
       "id": 7,
@@ -214,7 +226,9 @@
             "replies":[]
           }
         }
-      ]
+      ],
+      "upvotedBy": [],
+      "isUpvoted": false
     },
     {
       "id": 8,
@@ -234,7 +248,9 @@
             "replies":[]
           }
         }
-      ]
+      ],
+      "upvotedBy": [],
+      "isUpvoted": false
     },
     {
       "id": 9,
@@ -254,7 +270,9 @@
             "replies":[]
           }
         }
-      ]
+      ],
+      "upvotedBy": [],
+      "isUpvoted": false
     },
     {
       "id": 10,
@@ -274,7 +292,9 @@
             "replies":[]
           }
         }
-      ]
+      ],
+      "upvotedBy": [],
+      "isUpvoted": false
     },
     {
       "id": 11,
@@ -283,7 +303,9 @@
       "upvotes": 9,
       "status": "In-Progress",
       "description": "Screenshots of solutions with animations don’t display correctly.",
-      "comments":[]
+      "comments":[],
+      "upvotedBy": [],
+      "isUpvoted": false
     },
     {
       "id": 12,
@@ -315,7 +337,9 @@
             }
           ]
         }
-      ]
+      ],
+      "upvotedBy": [],
+      "isUpvoted": false
     }
   ]
 }

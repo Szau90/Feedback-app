@@ -14,7 +14,7 @@ export default async function handler(
     case "GET":
       try {
         const client = await MongoClient.connect(
-          "mongodb+srv://Szau:FordMondeo12@cluster0.jfdopa9.mongodb.net/Product-feedback-app?retryWrites=true&w=majority"
+          process.env.NEXT_PUBLIC_MONGODB_URI!
         );
         const db = client.db("Product-feedback-app");
 
@@ -36,7 +36,7 @@ export default async function handler(
     case "PUT":
       try {
         const client = await MongoClient.connect(
-          "mongodb+srv://Szau:FordMondeo12@cluster0.jfdopa9.mongodb.net/Product-feedback-app?retryWrites=true&w=majority"
+          process.env.NEXT_PUBLIC_MONGODB_URI!
         );
 
         const db = client.db("Product-feedback-app");
@@ -56,6 +56,8 @@ export default async function handler(
                 title: data.title,
                 comments: data.comments,
                 upvotes: data.upvotes,
+                isUpvoted: data.isUpvoted,
+                upvotedBy: data.upvotedBy,
               }
             );
 
@@ -71,20 +73,21 @@ export default async function handler(
     case "DELETE":
       try {
         const client = await MongoClient.connect(
-          "mongodb+srv://Szau:FordMondeo12@cluster0.jfdopa9.mongodb.net/Product-feedback-app?retryWrites=true&w=majority"
+          process.env.NEXT_PUBLIC_MONGODB_URI!
         );
 
-        const db = client.db("Product-feedback-app")
+        const db = client.db("Product-feedback-app");
 
         if (typeof feedbackId === "string") {
           const parsedFeedbackId = parseInt(feedbackId);
 
+          const feedback = await db
+            .collection("product-requests")
+            .findOneAndDelete({ id: parsedFeedbackId });
 
-        const feedback = await db.collection("product-requests").findOneAndDelete({id: parsedFeedbackId })
+          client.close();
 
-        client.close()
-
-        res.status(201).json(JSON.parse(JSON.stringify(feedback)))
+          res.status(201).json(JSON.parse(JSON.stringify(feedback)));
         }
       } catch (error) {
         console.log(error);

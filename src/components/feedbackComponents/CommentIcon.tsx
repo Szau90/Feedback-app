@@ -4,15 +4,14 @@ import { useRouter } from "next/router";
 import TotalLength from "./TotalLength";
 
 const CommentIcon: React.FC<{
-  comments:Comments[];
-  id:number;
-}> = ({ comments, id}) => {
+  comments: Comments[];
+  id: number;
+}> = ({ comments, id }) => {
+  const router = useRouter();
 
-    const router = useRouter();
-
-    const clickHandler = () => {
-        router.push(`/${id}`);
-      };
+  const clickHandler = () => {
+    router.push(`/${id}`);
+  };
 
   return (
     <>
@@ -25,7 +24,7 @@ const CommentIcon: React.FC<{
           style={{ objectFit: "contain" }}
           alt="comments"
         />
-       <TotalLength comments={comments} />
+        <TotalLength comments={comments} />
       </div>
     </>
   );

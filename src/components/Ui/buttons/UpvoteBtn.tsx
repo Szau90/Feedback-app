@@ -3,7 +3,6 @@ import { useAppDispatch, RootState } from "@/store/store";
 import Image from "next/image";
 import { User } from "@/models/feedback";
 import { handleUpvote, setUpvotes } from "@/store/feedbackSlice";
-import { useSelector } from "react-redux";
 
 const UpvoteBtn: React.FC<{
   isUpvoted: boolean;
@@ -21,8 +20,8 @@ const UpvoteBtn: React.FC<{
     username: "velvetround",
   };
   const icon = isUpvoted1
-  ? "/assets/shared/icon-arrow-up-white.svg"
-  : "/assets/shared/icon-arrow-up-blue.svg";
+    ? "/assets/shared/icon-arrow-up-white.svg"
+    : "/assets/shared/icon-arrow-up-blue.svg";
 
   const handleUpvoteClick = (user: User, feedbackId: number) => {
     dispatch(handleUpvote({ user, feedbackId }));

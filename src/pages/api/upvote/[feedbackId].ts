@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { MongoClient } from "mongodb";
-import Feedback from "@/models/feedback";
+
 
 export default async function handler(
   req: NextApiRequest,
@@ -13,7 +13,7 @@ export default async function handler(
     
 
     const client = await MongoClient.connect(
-      "mongodb+srv://Szau:FordMondeo12@cluster0.jfdopa9.mongodb.net/Product-feedback-app?retryWrites=true&w=majority"
+      process.env.NEXT_PUBLIC_MONGODB_URI!,
     );
     const db = client.db("Product-feedback-app");
 
