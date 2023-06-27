@@ -6,6 +6,10 @@ import Category from "./feedbackComponents/Category";
 import Status from "./feedbackComponents/Status";
 import RoadmapItemWrapper from "./Ui/wrappers/RoadmapItemWrapper";
 import CommentIcon from "./feedbackComponents/CommentIcon";
+import { useEffect } from "react";
+import { useAppDispatch, RootState } from "@/store/store";
+import { fetchFeedback } from "@/store/feedbackSlice";
+import { useSelector } from "react-redux";
 
 const RoadmapItem: React.FC<{
   id: number;
@@ -26,6 +30,20 @@ const RoadmapItem: React.FC<{
   status,
   isUpvoted,
 }) => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchFeedback());
+  }, [dispatch, upvotes]);
+  const feedback = useSelector((state: RootState) => state.feedback.feedback);
+
+  let upvote = upvotes;
+
+  const feedbackItem = feedback.find((f) => f.id === id);
+
+  const renderUpvotes = feedbackItem
+    ? (upvote = feedbackItem.upvotes)
+    : upvotes;
+
   return (
     <>
       <RoadmapItemWrapper status={status}>
@@ -42,7 +60,7 @@ const RoadmapItem: React.FC<{
 
           <div className="mt-[9px] flex items-center justify-between">
             <MobileUpvoteBtn
-              upvote={upvotes}
+              upvote={renderUpvotes}
               isUpvoted={isUpvoted}
               feedbackId={id}
               hide=""

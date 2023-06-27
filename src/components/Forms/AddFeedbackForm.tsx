@@ -37,7 +37,7 @@ const AddFeedbackForm = () => {
     id: Math.floor(Math.random() * 10000),
     category: category,
     description: enteredDescription,
-    status: "suggestion",
+    status: "Suggestion",
     title: enteredTitle,
     comments: [],
     upvotes: 0,
